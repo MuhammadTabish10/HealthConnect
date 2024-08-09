@@ -1,0 +1,17 @@
+# Server Configuration
+server:
+  port: 8084
+
+# Application Configuration
+spring:
+  application:
+    name: API-GATEWAY
+
+  # Spring Cloud Gateway Configuration
+  cloud:
+    gateway:
+      routes:
+        - id: USER-SERVICE
+          uri: lb://USER-SERVICE
+          predicates:
+            - Path=/api/user/**

@@ -1,0 +1,18 @@
+# Server Configuration
+server:
+  port: 8081
+
+# Application Configuration
+spring:
+  application:
+    name: USER-SERVICE
+
+  # MySQL Database Configuration
+  datasource:
+    url: jdbc:mysql://localhost:3306/user_service?createDatabaseIfNotExist=true
+    username: root
+    password: root
+  jpa:
+    hibernate:
+      use-new-id-generator-mappings: false
+    ddl-auto: update
