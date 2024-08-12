@@ -10,4 +10,5 @@ public class ErrorMessages {
     public static final String ENTITY_NOT_FOUND = "%s with ID %d not found";
     public static final String ENTITY_UPDATE_FAILED = "Failed to update %s with ID %d";
     public static final String ENTITY_DELETE_FAILED = "Failed to deactivate %s with ID %d";
+    public static final String UNEXPECTED_ERROR = "An unexpected error occurred: ";
 }

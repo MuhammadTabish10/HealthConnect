@@ -1,11 +1,11 @@
 # Server Configuration
 server:
-  port: 8083
+  port: 8081
 
 # Application Configuration
 spring:
   application:
-    name: USER-SERVICE
+    name: AUTH-SERVICE
 
   # MySQL Database Configuration
   datasource:

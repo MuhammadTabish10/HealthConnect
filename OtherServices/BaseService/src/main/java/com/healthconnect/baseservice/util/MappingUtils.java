@@ -22,6 +22,10 @@ public class MappingUtils {
         return modelMapper.map(dto, entityClass);
     }
 
+    public <T> void map(final T source, final T destination) {
+        modelMapper.map(source, destination);
+    }
+
     public <D, T> List<D> mapToDtoList(final List<T> entityList, Class<D> outClass) {
         return entityList.stream()
                 .map(entity -> mapToDto(entity, outClass))
@@ -32,9 +36,5 @@ public class MappingUtils {
         return dtoList.stream()
                 .map(dto -> mapToEntity(dto, entityClass))
                 .collect(Collectors.toList());
-    }
-
-    public <T> void map(final T source, final T destination) {
-        modelMapper.map(source, destination);
     }
 }

@@ -1,23 +1,25 @@
 package com.healthconnect.userservice.controller;
 
+import com.healthconnect.baseservice.controller.GenericController;
 import com.healthconnect.userservice.constant.ApiEndpoints;
 import com.healthconnect.userservice.dto.UserDto;
 import com.healthconnect.userservice.service.UserService;
 import jakarta.validation.Valid;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 
-
 @RestController
 @RequestMapping(ApiEndpoints.USERS)
-public class UserController {
+public class UserController extends GenericController<UserDto> {
 
-    private final UserService userService;
+    @Autowired
+    UserService userService;
 
     public UserController(UserService userService) {
-        this.userService = userService;
+        super(userService);
     }
 
     @PostMapping(ApiEndpoints.REGISTER)
