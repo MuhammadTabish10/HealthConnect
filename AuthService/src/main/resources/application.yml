@@ -15,5 +15,11 @@ spring:
   jpa:
     hibernate:
       use-new-id-generator-mappings: false
-    ddl-auto: create
+    ddl-auto: update
     generate-ddl: true
+
+
+security:
+  jwt:
+    secret-key: hjasdkjsbackljsbndg15fd5s61f35ds1gf56asv5fd1sfdsfdsgDVKSDMVDSkfefsadf5sd4f68d4sa68f4ds6f4s5d64ft8ews4f56sde4yh86t44ew3t2421rfdkjasnvfklasvz
+    expiration-time: 86400000

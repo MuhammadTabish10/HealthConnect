@@ -1,10 +1,9 @@
 package com.healthconnect.userservice.service.impl;
 
-import com.healthconnect.baseservice.repository.GenericRepository;
 import com.healthconnect.baseservice.service.impl.GenericServiceImpl;
 import com.healthconnect.baseservice.util.MappingUtils;
-import com.healthconnect.userservice.dto.UserDto;
-import com.healthconnect.userservice.model.User;
+import com.healthconnect.commonmodels.dto.UserDto;
+import com.healthconnect.commonmodels.model.User;
 import com.healthconnect.userservice.repository.UserRepository;
 import com.healthconnect.userservice.service.UserService;
 import jakarta.transaction.Transactional;

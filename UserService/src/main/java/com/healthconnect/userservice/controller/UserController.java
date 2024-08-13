@@ -1,8 +1,8 @@
 package com.healthconnect.userservice.controller;
 
 import com.healthconnect.baseservice.controller.GenericController;
+import com.healthconnect.commonmodels.dto.UserDto;
 import com.healthconnect.userservice.constant.ApiEndpoints;
-import com.healthconnect.userservice.dto.UserDto;
 import com.healthconnect.userservice.service.UserService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;

@@ -1,6 +1,6 @@
-package com.healthconnect.userservice.dto;
+package com.healthconnect.commonmodels.dto;
 
-import com.healthconnect.userservice.model.Role;
+import com.healthconnect.commonmodels.model.Role;
 import jakarta.validation.constraints.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;

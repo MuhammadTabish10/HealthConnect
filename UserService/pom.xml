@@ -20,7 +20,7 @@
         updates, and health condition management, all accessible through defined endpoints, ensuring a seamless and
         secure user experience.
     </description>
-    <url>https://github.com/your-repo/UserService</url>
+    <url>https://github.com/MuhammadTabish10/HealthConnect</url>
     <licenses>
         <license>
             <name>Apache License, Version 2.0</name>
@@ -44,13 +44,13 @@
             <version>1.0.0</version>
         </dependency>
         <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-security</artifactId>
+            <groupId>com.healthconnect</groupId>
+            <artifactId>common-models</artifactId>
+            <version>1.0.0</version>
         </dependency>
         <dependency>
-            <groupId>io.jsonwebtoken</groupId>
-            <artifactId>jjwt-api</artifactId>
-            <version>0.11.5</version>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-security</artifactId>
         </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>

@@ -1,4 +1,4 @@
-package com.healthconnect.baseservice.model;
+package com.healthconnect.commonmodels.model;
 
 import jakarta.persistence.EntityListeners;
 import jakarta.persistence.MappedSuperclass;

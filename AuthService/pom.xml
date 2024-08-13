@@ -19,7 +19,7 @@
         and ensuring that only authenticated and authorized users can access protected resources across the
         microservices.
     </description>
-    <url>https://github.com/your-repo/AuthService</url>
+    <url>https://github.com/MuhammadTabish10/HealthConnect</url>
     <licenses>
         <license>
             <name>Apache License, Version 2.0</name>
@@ -41,6 +41,11 @@
         <dependency>
             <groupId>com.healthconnect</groupId>
             <artifactId>base-service</artifactId>
+            <version>1.0.0</version>
+        </dependency>
+        <dependency>
+            <groupId>com.healthconnect</groupId>
+            <artifactId>common-models</artifactId>
             <version>1.0.0</version>
         </dependency>
         <dependency>

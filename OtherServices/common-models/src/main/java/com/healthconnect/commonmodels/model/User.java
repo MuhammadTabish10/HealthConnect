@@ -1,6 +1,7 @@
-package com.healthconnect.userservice.model;
+package com.healthconnect.commonmodels.model;
 
-import com.healthconnect.baseservice.model.Auditable;
+
+
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
