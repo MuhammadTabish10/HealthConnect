@@ -23,6 +23,8 @@ import java.time.LocalDateTime;
 @Service
 public class AuthServiceImpl extends GenericServiceImpl<User, UserDto> implements AuthService {
 
+    private static final String BEARER = "Bearer";
+
     private final UserRepository userRepository;
     private final MappingUtils mappingUtils;
     private final PasswordEncoder passwordEncoder;
@@ -57,11 +59,9 @@ public class AuthServiceImpl extends GenericServiceImpl<User, UserDto> implement
         CustomUserDetail userDetail = (CustomUserDetail) authentication.getPrincipal();
         String token = jwtService.generateToken(userDetail);
 
-        return new TokenResponse(
-                token,
-                jwtService.getExpirationTime(),
-                "Bearer",
-                LocalDateTime.now()
-        );
+        LocalDateTime now = LocalDateTime.now();
+        LocalDateTime expiresAt = now.plusSeconds(jwtService.getExpirationTime() / 1000);
+
+        return new TokenResponse(token, expiresAt, BEARER, now);
     }
 }

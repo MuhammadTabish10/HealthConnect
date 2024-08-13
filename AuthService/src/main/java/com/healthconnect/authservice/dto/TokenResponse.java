@@ -13,7 +13,7 @@ import java.time.LocalDateTime;
 @Builder
 public class TokenResponse {
     private String accessToken;
-    private Long expiresIn;
+    private LocalDateTime  expiresIn;
     private String tokenType;
     private LocalDateTime generatedAt;
 }
