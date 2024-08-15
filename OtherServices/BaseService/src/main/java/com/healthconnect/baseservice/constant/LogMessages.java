@@ -5,6 +5,16 @@ import lombok.NoArgsConstructor;
 
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class LogMessages {
+
+    public static final String REQUEST_LOG_HEADER = "--------------- Request ---------------";
+    public static final String RESPONSE_LOG_HEADER = "--------------- Response ---------------";
+    public static final String METHOD_LABEL = "Method: {}";
+    public static final String URI_LABEL = "URI: {}";
+    public static final String HEADERS_LABEL = "Headers: ";
+    public static final String QUERY_PARAMS_LABEL = "Query Params: {}";
+    public static final String STATUS_CODE_LABEL = "Status Code: {}";
+    public static final String REQUEST_URI_LABEL = "Request URI: {}";
+
     public static final String ENTITY_SAVE_SUCCESS = "Entity of type {} saved successfully with ID: {}";
     public static final String ENTITY_FETCH_SUCCESS = "Entity of type {} found with ID: {}";
     public static final String ENTITY_FETCH_ALL_SUCCESS = "Fetched {} entities of type {}";
