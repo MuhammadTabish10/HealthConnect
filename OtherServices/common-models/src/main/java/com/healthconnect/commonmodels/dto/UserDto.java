@@ -1,5 +1,6 @@
 package com.healthconnect.commonmodels.dto;
 
+import com.healthconnect.commonmodels.enums.Gender;
 import com.healthconnect.commonmodels.model.Role;
 import jakarta.validation.constraints.*;
 import lombok.AllArgsConstructor;
@@ -23,6 +24,8 @@ public class UserDto {
 
     @Min(value = 0, message = "Age must be a positive number")
     private Integer age;
+
+    private Gender gender;
 
     @Email(message = "Email should be valid")
     @NotBlank(message = "Email is mandatory")

@@ -2,6 +2,7 @@ package com.healthconnect.commonmodels.model;
 
 
 
+import com.healthconnect.commonmodels.enums.Gender;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
@@ -29,6 +30,9 @@ public class User extends Auditable {
     private String name;
 
     private Integer age;
+
+    @Enumerated(EnumType.STRING)
+    private Gender gender;
 
     @Column(nullable = false, unique = true)
     private String email;

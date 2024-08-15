@@ -20,8 +20,7 @@ public class CustomUserDetail implements UserDetails {
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return user.getRoles().stream()
                 .flatMap(role -> role.getPermissions().stream()
-                        .map(permission -> new SimpleGrantedAuthority(permission.getName()))
-                )
+                        .map(permission -> new SimpleGrantedAuthority(permission.getName())))
                 .collect(Collectors.toList());
     }
 

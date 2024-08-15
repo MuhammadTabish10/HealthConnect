@@ -1,5 +1,6 @@
 package com.healthconnect.authservice.dto;
 
+import com.healthconnect.authservice.constant.ValidationMessages;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
@@ -13,10 +14,10 @@ import lombok.NoArgsConstructor;
 @Builder
 public class LoginCredentials {
 
-    @Email(message = "Email should be valid")
-    @NotBlank(message = "Email is mandatory")
+    @Email(message = ValidationMessages.EMAIL_VALID)
+    @NotBlank(message = ValidationMessages.EMAIL_MANDATORY)
     private String email;
 
-    @NotBlank(message = "Password is mandatory")
+    @NotBlank(message = ValidationMessages.PASSWORD_MANDATORY)
     private String password;
 }

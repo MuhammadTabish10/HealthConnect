@@ -71,7 +71,7 @@ public class GenericServiceImpl<T, U> implements GenericService<U> {
                 })
                 .orElseThrow(() -> {
                     logger.error(LogMessages.ENTITY_FETCH_ERROR, dtoClass.getSimpleName(), id);
-                    return new EntityNotFoundException(String.format(ErrorMessages.ENTITY_NOT_FOUND, entityClass.getSimpleName(), id));
+                    return new EntityNotFoundException(String.format(ErrorMessages.ENTITY_NOT_FOUND_AT_ID, entityClass.getSimpleName(), id));
                 });
     }
 
@@ -83,7 +83,7 @@ public class GenericServiceImpl<T, U> implements GenericService<U> {
             T existingEntity = repository.findById(id)
                     .orElseThrow(() -> {
                         logger.error(LogMessages.ENTITY_FETCH_ERROR, dtoClass.getSimpleName(), id);
-                        return new EntityNotFoundException(String.format(ErrorMessages.ENTITY_NOT_FOUND, entityClass.getSimpleName(), id));
+                        return new EntityNotFoundException(String.format(ErrorMessages.ENTITY_NOT_FOUND_AT_ID, entityClass.getSimpleName(), id));
                     });
             T updatedEntity = repository.save(existingEntity);
             logger.info(LogMessages.ENTITY_UPDATE_SUCCESS, dtoClass.getSimpleName(), id);
@@ -101,7 +101,7 @@ public class GenericServiceImpl<T, U> implements GenericService<U> {
         try {
             if (repository.deactivateById(id) == 0) {
                 logger.error(LogMessages.ENTITY_FETCH_ERROR, dtoClass.getSimpleName(), id);
-                throw new EntityNotFoundException(String.format(ErrorMessages.ENTITY_NOT_FOUND, entityClass.getSimpleName(), id));
+                throw new EntityNotFoundException(String.format(ErrorMessages.ENTITY_NOT_FOUND_AT_ID, entityClass.getSimpleName(), id));
             }
             logger.info(LogMessages.ENTITY_DELETE_SUCCESS, dtoClass.getSimpleName(), id);
         } catch (Exception e) {

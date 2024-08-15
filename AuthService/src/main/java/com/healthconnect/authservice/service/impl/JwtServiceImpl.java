@@ -1,11 +1,14 @@
 package com.healthconnect.authservice.service.impl;
 
+import com.healthconnect.authservice.constant.LogMessages;
 import com.healthconnect.authservice.service.JwtService;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -21,6 +24,13 @@ import java.util.stream.Collectors;
 @Service
 public class JwtServiceImpl implements JwtService {
 
+    private static final Logger logger = LoggerFactory.getLogger(JwtServiceImpl.class);
+
+    // JWT Constants
+    private static final String ROLES_CLAIM_KEY = "ROLES";
+    private static final String PERMISSIONS_CLAIM_KEY = "PERMISSIONS";
+    private static final String ROLE_PREFIX = "ROLE_";
+
     @Value("${security.jwt.secret-key}")
     private String secretKey;
 
@@ -29,17 +39,22 @@ public class JwtServiceImpl implements JwtService {
 
     @Override
     public String extractUsername(String token) {
-        return extractClaim(token, Claims::getSubject);
+        String username = extractClaim(token, Claims::getSubject);
+        logger.debug(String.format(LogMessages.EXTRACTED_USERNAME_LOG, username));
+        return username;
     }
 
     @Override
     public <T> T extractClaim(String token, Function<Claims, T> claimsResolver) {
         final Claims claims = extractAllClaims(token);
-        return claimsResolver.apply(claims);
+        T claim = claimsResolver.apply(claims);
+        logger.debug(String.format(LogMessages.EXTRACTED_CLAIM_LOG, claim));
+        return claim;
     }
 
     @Override
     public String generateToken(UserDetails userDetails) {
+        logger.info(String.format(LogMessages.GENERATING_TOKEN_LOG, userDetails.getUsername()));
         return generateToken(new HashMap<>(), userDetails);
     }
 
@@ -47,13 +62,17 @@ public class JwtServiceImpl implements JwtService {
     public String generateToken(Map<String, Object> extraClaims, UserDetails userDetails) {
         Map<String, Object> claims = buildClaims(userDetails);
         claims.putAll(extraClaims);
-        return buildToken(claims, userDetails.getUsername(), jwtExpiration);
+        String token = buildToken(claims, userDetails.getUsername(), jwtExpiration);
+        logger.info(String.format(LogMessages.GENERATED_TOKEN_LOG, userDetails.getUsername()));
+        return token;
     }
 
     @Override
     public boolean isTokenValid(String token, UserDetails userDetails) {
-        final String email = extractUsername(token);
-        return (email.equals(userDetails.getUsername())) && !isTokenExpired(token);
+        String email = extractUsername(token);
+        boolean isValid = (email.equals(userDetails.getUsername())) && !isTokenExpired(token);
+        logger.debug(String.format(LogMessages.TOKEN_VALIDATION_LOG, userDetails.getUsername(), isValid));
+        return isValid;
     }
 
     @Override
@@ -66,48 +85,60 @@ public class JwtServiceImpl implements JwtService {
 
         userDetails.getAuthorities().stream()
                 .map(GrantedAuthority::getAuthority)
-                .collect(Collectors.partitioningBy(auth -> auth.startsWith("ROLE_")))
+                .collect(Collectors.partitioningBy(auth -> auth.startsWith(ROLE_PREFIX)))
                 .forEach((isRole, authorities) -> {
                     if (isRole) {
-                        claims.put("ROLES", authorities.stream()
-                                .map(role -> role.substring(5)) // Remove "ROLE_" prefix
+                        claims.put(ROLES_CLAIM_KEY, authorities.stream()
+                                .map(role -> role.substring(ROLE_PREFIX.length()))
                                 .collect(Collectors.toList()));
                     } else {
-                        claims.put("PERMISSIONS", authorities);
+                        claims.put(PERMISSIONS_CLAIM_KEY, authorities);
                     }
                 });
 
+        logger.debug(String.format(LogMessages.BUILT_CLAIMS_LOG, userDetails.getUsername(), claims));
         return claims;
     }
 
     private String buildToken(Map<String, Object> claims, String subject, long expiration) {
-        return Jwts.builder()
+        String token = Jwts.builder()
                 .setClaims(claims)
                 .setSubject(subject)
                 .setIssuedAt(new Date(System.currentTimeMillis()))
                 .setExpiration(new Date(System.currentTimeMillis() + expiration))
                 .signWith(getSignInKey(), SignatureAlgorithm.HS256)
                 .compact();
+
+        logger.debug(String.format(LogMessages.BUILT_TOKEN_LOG, subject, token));
+        return token;
     }
 
     private boolean isTokenExpired(String token) {
-        return extractExpiration(token).before(new Date());
+        boolean expired = extractExpiration(token).before(new Date());
+        logger.debug(String.format(LogMessages.CHECKED_TOKEN_EXPIRATION_LOG, expired));
+        return expired;
     }
 
     private Date extractExpiration(String token) {
-        return extractClaim(token, Claims::getExpiration);
+        Date expiration = extractClaim(token, Claims::getExpiration);
+        logger.debug(String.format(LogMessages.EXTRACTED_EXPIRATION_LOG, expiration));
+        return expiration;
     }
 
     private Claims extractAllClaims(String token) {
-        return Jwts.parserBuilder()
+        Claims claims = Jwts.parserBuilder()
                 .setSigningKey(getSignInKey())
                 .build()
                 .parseClaimsJws(token)
                 .getBody();
+        logger.debug(String.format(LogMessages.EXTRACTED_ALL_CLAIMS_LOG, claims));
+        return claims;
     }
 
     private Key getSignInKey() {
         byte[] keyBytes = Decoders.BASE64.decode(secretKey);
-        return Keys.hmacShaKeyFor(keyBytes);
+        Key key = Keys.hmacShaKeyFor(keyBytes);
+        logger.debug(LogMessages.GENERATED_SIGNING_KEY_LOG);
+        return key;
     }
 }

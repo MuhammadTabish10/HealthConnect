@@ -3,14 +3,14 @@ package com.healthconnect.baseservice.exception;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
-@ResponseStatus(value = HttpStatus.NOT_FOUND)
-public class UserNotFoundException extends RuntimeException {
+@ResponseStatus(value = HttpStatus.FORBIDDEN)
+public class UnAuthorizedException extends RuntimeException{
 
-    public UserNotFoundException(String message) {
+    public UnAuthorizedException(String message) {
         super(message);
     }
 
-    public UserNotFoundException(String message, Throwable cause) {
+    public UnAuthorizedException(String message, Throwable cause) {
         super(message, cause);
     }
 }

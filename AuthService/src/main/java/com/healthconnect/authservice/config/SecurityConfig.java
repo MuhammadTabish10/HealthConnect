@@ -29,9 +29,8 @@ public class SecurityConfig {
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http.csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/api/v1/auth/**").permitAll() // Allow access to /auth/** paths
-                        .requestMatchers("/swagger-ui.html", "/v2/api-docs").permitAll() // Allow access to Swagger
-                        .anyRequest().authenticated()) // All other paths require authentication
+                        .requestMatchers("/api/v1/auth/**", "/swagger-ui.html", "/v2/api-docs").permitAll()
+                        .anyRequest().authenticated())
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS));
         return http.build();
     }

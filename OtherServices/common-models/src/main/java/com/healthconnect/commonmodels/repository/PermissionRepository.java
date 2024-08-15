@@ -1,4 +1,4 @@
-package com.healthconnect.userservice.repository;
+package com.healthconnect.commonmodels.repository;
 
 import com.healthconnect.commonmodels.model.Permission;
 import org.springframework.data.jpa.repository.JpaRepository;
