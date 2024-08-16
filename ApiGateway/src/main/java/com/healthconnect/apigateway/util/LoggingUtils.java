@@ -9,8 +9,8 @@ import org.springframework.stereotype.Component;
 import java.util.List;
 import java.util.Map;
 
-import static com.healthconnect.baseservice.constant.LogMessages.*;
-import static com.healthconnect.baseservice.constant.Types.REQUEST_TYPE;
+import static com.healthconnect.baseservice.constant.LogMessages.HEADERS_LABEL;
+import static com.healthconnect.baseservice.constant.LogMessages.SECTION_DIVIDER;
 
 @Component
 public class LoggingUtils {
