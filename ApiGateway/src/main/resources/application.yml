@@ -2,11 +2,6 @@
 server:
   port: 8082
 
-logging:
-  level:
-    org.springframework.cloud.gateway: DEBUG
-    reactor.netty.http.client: DEBUG
-
 # Application Configuration
 spring:
   application:
