@@ -15,6 +15,8 @@ public class MessageConstants {
     public static final String QUERY_PARAMS_LABEL = "Query Params: {}";
     public static final String STATUS_CODE_LABEL = "Status Code: {}";
     public static final String REQUEST_URI_LABEL = "Request URI: {}";
+    public static final String REQUEST_BODY_LABEL = "Request Body: {}";
+    public static final String RESPONSE_BODY_LABEL = "Response Body: {}";
     public static final String PROCESSING_REQUEST_LOG = "Processing request for URI: %s";
     public static final String AUTH_HEADER_MISSING_OR_INVALID = "Authorization header is missing or does not start with Bearer";
     public static final String EXTRACTED_JWT_TOKEN_LOG = "Extracted JWT Token: %s";

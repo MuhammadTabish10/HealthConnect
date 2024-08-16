@@ -14,6 +14,8 @@ public class LogMessages {
     public static final String QUERY_PARAMS_LABEL = "Query Params: {}";
     public static final String STATUS_CODE_LABEL = "Status Code: {}";
     public static final String REQUEST_URI_LABEL = "Request URI: {}";
+    public static final String REQUEST_BODY_LABEL = "Request Body: {}";
+    public static final String RESPONSE_BODY_LABEL = "Response Body: {}";
 
     public static final String ENTITY_SAVE_SUCCESS = "Entity of type {} saved successfully with ID: {}";
     public static final String ENTITY_FETCH_SUCCESS = "Entity of type {} found with ID: {}";
