@@ -25,11 +25,19 @@ public class SecurityConfig {
         this.userDetailsService = userDetailsService;
     }
 
+    private static final String[] AUTH_WHITELIST = {
+            "/api/v1/auth/**",
+            "/swagger-ui/**",
+            "/v3/api-docs/**",
+            "swagger-resources/**",
+            "swagger-resources"
+    };
+
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http.csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/api/v1/auth/**", "/swagger-ui.html", "/v2/api-docs").permitAll()
+                        .requestMatchers(AUTH_WHITELIST).permitAll()
                         .anyRequest().authenticated())
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS));
         return http.build();

@@ -6,9 +6,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class MessageConstants {
 
-//    // Log Messages
-    public static final String REQUEST_LOG_HEADER = "--------------- Request ---------------";
-    public static final String RESPONSE_LOG_HEADER = "--------------- Response ---------------";
+    // Log Messages
     public static final String PROCESSING_REQUEST_LOG = "Processing request for URI: %s";
     public static final String AUTH_HEADER_MISSING_OR_INVALID = "Authorization header is missing or does not start with Bearer";
     public static final String EXTRACTED_JWT_TOKEN_LOG = "Extracted JWT Token: %s";

@@ -28,8 +28,16 @@ public class ServletLoggingFilter implements Filter {
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain)
             throws IOException, ServletException {
 
-        CachedBodyHttpServletRequest cachedRequest = new CachedBodyHttpServletRequest((HttpServletRequest) request);
-        CachedBodyHttpServletResponse cachedResponse = new CachedBodyHttpServletResponse((HttpServletResponse) response);
+        HttpServletRequest httpRequest = (HttpServletRequest) request;
+        HttpServletResponse httpResponse = (HttpServletResponse) response;
+
+        if (isSwaggerRequest(httpRequest)) {
+            chain.doFilter(request, response);
+            return;
+        }
+
+        CachedBodyHttpServletRequest cachedRequest = new CachedBodyHttpServletRequest(httpRequest);
+        CachedBodyHttpServletResponse cachedResponse = new CachedBodyHttpServletResponse(httpResponse);
 
         logRequestDetails(cachedRequest);
         chain.doFilter(cachedRequest, cachedResponse);

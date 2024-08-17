@@ -1,4 +1,4 @@
-package com.healthconnect.baseservice.model;
+package com.healthconnect.baseservice.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;

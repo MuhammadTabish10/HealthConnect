@@ -9,13 +9,10 @@ import org.springframework.http.server.reactive.ServerHttpRequest;
 import org.springframework.http.server.reactive.ServerHttpResponse;
 import reactor.core.publisher.Mono;
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 
 import static com.healthconnect.baseservice.constant.LogMessages.*;
-import static com.healthconnect.baseservice.constant.Types.*;
+import static com.healthconnect.baseservice.constant.Types.REQUEST_TYPE;
 
 public class LoggingUtils {
 

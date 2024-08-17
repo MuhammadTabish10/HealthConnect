@@ -17,3 +17,9 @@ spring:
       use-new-id-generator-mappings: false
     ddl-auto: create
     generate-ddl: true
+
+swagger:
+  base-package: com.healthconnect.userservice
+  title: User Service API Documentation
+  description: API documentation for the User Management service of Healthcare Connect.
+  version: v1

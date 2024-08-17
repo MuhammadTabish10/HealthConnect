@@ -2,7 +2,7 @@ package com.healthconnect.baseservice.exception.handler;
 
 import com.healthconnect.baseservice.constant.ErrorMessages;
 import com.healthconnect.baseservice.exception.*;
-import com.healthconnect.baseservice.model.ExceptionMessage;
+import com.healthconnect.baseservice.dto.ExceptionMessage;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
