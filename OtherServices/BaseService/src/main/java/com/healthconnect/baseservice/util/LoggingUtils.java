@@ -69,9 +69,9 @@ public class LoggingUtils {
         response.getOutputStream().flush();
     }
 
-    public static boolean isSwaggerRequest(HttpServletRequest request) {
+    public static boolean isSwaggerOrActuatorRequest(HttpServletRequest request) {
         String uri = request.getRequestURI();
-        return uri.startsWith("/swagger-ui/") || uri.startsWith("/v3/api-docs/");
+        return uri.startsWith("/swagger-ui/") || uri.startsWith("/v3/api-docs/") || uri.startsWith("/actuator/");
     }
 
 }

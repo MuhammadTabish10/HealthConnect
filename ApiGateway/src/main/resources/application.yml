@@ -1,12 +1,19 @@
 # Server Configuration
 server:
-  port: 8082
+  port: 9090
 
 # Application Configuration
 spring:
   application:
     name: API-GATEWAY
 
-security:
-  jwt:
-    secret-key: hjasdkjsbackljsbndg15fd5s61f35ds1gf56asv5fd1sfdsfdsgDVKSDMVDSkfefsadf5sd4f68d4sa68f4ds6f4s5d64ft8ews4f56sde4yh86t44ew3t2421rfdkjasnvfklasvz
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          issuer-uri: http://localhost:8080/realms/healthconnect-realm
+          jwk-set-uri: http://localhost:8080/realms/healthconnect-realm/protocol/openid-connect/certs
+
+#baseservice:
+#    security:
+#      enabled: false

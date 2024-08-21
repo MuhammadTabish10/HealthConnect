@@ -31,7 +31,7 @@ public class ServletLoggingFilter implements Filter {
         HttpServletRequest httpRequest = (HttpServletRequest) request;
         HttpServletResponse httpResponse = (HttpServletResponse) response;
 
-        if (isSwaggerRequest(httpRequest)) {
+        if (isSwaggerOrActuatorRequest(httpRequest)) {
             chain.doFilter(request, response);
             return;
         }
@@ -61,7 +61,9 @@ public class ServletLoggingFilter implements Filter {
 
     private void logResponseDetails(HttpServletResponse response) throws IOException {
         logBasicInfo(RESPONSE_SENT_HEADER, null, null, RESPONSE_TYPE);
-        logger.info(STATUS_CODE_LABEL, response.getStatus(), response.getStatus() == 200 ? CHECK_MARK : ERROR);
+        logger.info(STATUS_CODE_LABEL, response.getStatus(),
+                (response.getStatus() == 200 || response.getStatus() == 204)
+                ? CHECK_MARK : ERROR);
         logHeaders(response);
         logBody(((CachedBodyHttpServletResponse) response).getCachedBody(), RESPONSE_BODY_LABEL);
         logger.info(DIVIDER);

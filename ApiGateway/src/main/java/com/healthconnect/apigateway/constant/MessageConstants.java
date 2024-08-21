@@ -14,6 +14,11 @@ public class MessageConstants {
     public static final String JWT_INVALID_LOG = "JWT Token is invalid or expired";
     public static final String JWT_VALIDATION_EXCEPTION_LOG = "Exception occurred while validating JWT Token: %s";
     public static final String JWT_MISSING_ERROR = "JWT Token is missing or invalid";
+    public static final String CONFIGURING_FILTER_CHAIN = "Configuring security filter chain";
+    public static final String CONFIGURING_AUTHORIZATION_EXCHANGE = "Configuring authorization for exchanges";
+    public static final String CONFIGURING_OAUTH2_SERVER = "Configuring OAuth2 resource server";
+    public static final String CONFIGURING_REACTIVE_JWT_DECODER = "Creating ReactiveJwtDecoder with issuer URI: {}";
+    public static final String CONFIGURING_JWT_AUTHENTICATION_CONVERTER = "Configuring JWT authentication converter";
 
     // JwtUtils Log Messages
     public static final String SIGNING_KEY_INITIALIZED = "Signing key initialized";

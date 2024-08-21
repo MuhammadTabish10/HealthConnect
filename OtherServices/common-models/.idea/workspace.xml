@@ -1,0 +1,155 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="SELECTIVE" />
+  </component>
+  <component name="ChangeListManager">
+    <list default="true" id="40a7bece-5691-4828-a618-004e068dce5b" name="Changes" comment="ApiGateway Security Added">
+      <change afterPath="$PROJECT_DIR$/../../ApiGateway/src/main/java/com/healthconnect/apigateway/config/CustomAuthenticationEntryPoint.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../../ApiGateway/src/main/java/com/healthconnect/apigateway/config/KeycloakJwtRolesConverter.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../../ApiGateway/src/main/java/com/healthconnect/apigateway/config/SecurityConfig.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../BaseService/src/main/java/com/healthconnect/baseservice/config/security/SecurityConfig.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../../UserService/src/main/java/com/healthconnect/userservice/config/AppConfig.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../../UserService/src/main/java/com/healthconnect/userservice/constant/LogMessages.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../../UserService/src/main/java/com/healthconnect/userservice/constant/UserConstants.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../../UserService/src/main/java/com/healthconnect/userservice/constant/ValidationMessages.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../../UserService/src/main/java/com/healthconnect/userservice/dto/LoginCredentials.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../../UserService/src/main/java/com/healthconnect/userservice/dto/TokenResponse.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../../UserService/src/main/java/com/healthconnect/userservice/util/UserUtils.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../ApiGateway/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../../ApiGateway/pom.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../ApiGateway/src/main/java/com/healthconnect/apigateway/config/GatewayConfig.java" beforeDir="false" afterPath="$PROJECT_DIR$/../../ApiGateway/src/main/java/com/healthconnect/apigateway/config/GatewayConfig.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../ApiGateway/src/main/java/com/healthconnect/apigateway/constant/MessageConstants.java" beforeDir="false" afterPath="$PROJECT_DIR$/../../ApiGateway/src/main/java/com/healthconnect/apigateway/constant/MessageConstants.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../ApiGateway/src/main/java/com/healthconnect/apigateway/constant/RouteConstants.java" beforeDir="false" afterPath="$PROJECT_DIR$/../../ApiGateway/src/main/java/com/healthconnect/apigateway/constant/RouteConstants.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../ApiGateway/src/main/java/com/healthconnect/apigateway/filter/JwtAuthenticationFilter.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../ApiGateway/src/main/java/com/healthconnect/apigateway/util/JwtUtils.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../ApiGateway/src/main/resources/application.yml" beforeDir="false" afterPath="$PROJECT_DIR$/../../ApiGateway/src/main/resources/application.yml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../AuthService/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../../AuthService/pom.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../AuthService/src/main/java/com/healthconnect/authservice/config/CustomUserDetail.java" beforeDir="false" afterPath="$PROJECT_DIR$/../../AuthService/src/main/java/com/healthconnect/authservice/config/CustomUserDetail.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../AuthService/src/main/java/com/healthconnect/authservice/config/SecurityConfig.java" beforeDir="false" afterPath="$PROJECT_DIR$/../../AuthService/src/main/java/com/healthconnect/authservice/config/SecurityConfig.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../AuthService/src/main/java/com/healthconnect/authservice/dto/TokenResponse.java" beforeDir="false" afterPath="$PROJECT_DIR$/../../AuthService/src/main/java/com/healthconnect/authservice/dto/TokenResponse.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../AuthService/src/main/java/com/healthconnect/authservice/service/impl/JwtServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/../../AuthService/src/main/java/com/healthconnect/authservice/service/impl/JwtServiceImpl.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../AuthService/src/main/resources/application.yml" beforeDir="false" afterPath="$PROJECT_DIR$/../../AuthService/src/main/resources/application.yml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../BaseService/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../BaseService/pom.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../BaseService/src/main/java/com/healthconnect/baseservice/config/ModelMapperConfig.java" beforeDir="false" afterPath="$PROJECT_DIR$/../BaseService/src/main/java/com/healthconnect/baseservice/config/mapper/ModelMapperConfig.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../BaseService/src/main/java/com/healthconnect/baseservice/config/SwaggerConfig.java" beforeDir="false" afterPath="$PROJECT_DIR$/../BaseService/src/main/java/com/healthconnect/baseservice/config/swagger/SwaggerConfig.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../BaseService/src/main/java/com/healthconnect/baseservice/config/SwaggerProperties.java" beforeDir="false" afterPath="$PROJECT_DIR$/../BaseService/src/main/java/com/healthconnect/baseservice/config/swagger/SwaggerProperties.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../BaseService/src/main/java/com/healthconnect/baseservice/filter/ServletLoggingFilter.java" beforeDir="false" afterPath="$PROJECT_DIR$/../BaseService/src/main/java/com/healthconnect/baseservice/filter/ServletLoggingFilter.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../BaseService/src/main/java/com/healthconnect/baseservice/util/LoggingUtils.java" beforeDir="false" afterPath="$PROJECT_DIR$/../BaseService/src/main/java/com/healthconnect/baseservice/util/LoggingUtils.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.mvn/wrapper/maven-wrapper.properties" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/mvnw" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/mvnw.cmd" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/pom.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/healthconnect/commonmodels/CommonModelsApplication.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/healthconnect/commonmodels/config/AuditingConfig.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/healthconnect/commonmodels/dto/PermissionDto.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/healthconnect/commonmodels/dto/RoleDto.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/healthconnect/commonmodels/dto/UserDto.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/healthconnect/commonmodels/enums/Gender.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/healthconnect/commonmodels/model/Auditable.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/healthconnect/commonmodels/model/Permission.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/healthconnect/commonmodels/model/Role.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/healthconnect/commonmodels/model/User.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/healthconnect/commonmodels/repository/PermissionRepository.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/healthconnect/commonmodels/repository/RoleRepository.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/healthconnect/commonmodels/repository/UserRepository.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/java/com/healthconnect/commonmodels/CommonModelsApplicationTests.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../UserService/src/main/java/com/healthconnect/userservice/constant/ApiEndpoints.java" beforeDir="false" afterPath="$PROJECT_DIR$/../../UserService/src/main/java/com/healthconnect/userservice/constant/ApiEndpoints.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../UserService/src/main/java/com/healthconnect/userservice/controller/UserController.java" beforeDir="false" afterPath="$PROJECT_DIR$/../../UserService/src/main/java/com/healthconnect/userservice/controller/UserController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../UserService/src/main/java/com/healthconnect/userservice/service/UserService.java" beforeDir="false" afterPath="$PROJECT_DIR$/../../UserService/src/main/java/com/healthconnect/userservice/service/UserService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../UserService/src/main/java/com/healthconnect/userservice/service/impl/UserServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/../../UserService/src/main/java/com/healthconnect/userservice/service/impl/UserServiceImpl.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../UserService/src/main/resources/application.yml" beforeDir="false" afterPath="$PROJECT_DIR$/../../UserService/src/main/resources/application.yml" afterDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="Enum" />
+      </list>
+    </option>
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/../.." />
+  </component>
+  <component name="MavenImportPreferences">
+    <option name="generalSettings">
+      <MavenGeneralSettings>
+        <option name="mavenHomeTypeForPersistence" value="WRAPPER" />
+      </MavenGeneralSettings>
+    </option>
+  </component>
+  <component name="ProjectColorInfo">{
+  &quot;associatedIndex&quot;: 7
+}</component>
+  <component name="ProjectId" id="2kahbPggjRBO1LPTVfKFCblKOrB" />
+  <component name="ProjectLevelVcsManager">
+    <ConfirmationsSetting value="2" id="Add" />
+  </component>
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "Maven.common-models [clean,install].executor": "Run",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "kotlin-language-version-configured": "true",
+    "last_opened_file_path": "C:/Users/MuhammadTabish/OneDrive - Paysys labs/Desktop/Projects/MyProjects/HealthConnect/OtherServices/CommonModels"
+  }
+}]]></component>
+  <component name="RecentsManager">
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="C:\Users\MuhammadTabish\OneDrive - Paysys labs\Desktop\Projects\MyProjects\HealthConnect\OtherServices\common-models\src\main\java\com\healthconnect\commonmodels\dto" />
+      <recent name="C:\Users\MuhammadTabish\OneDrive - Paysys labs\Desktop\Projects\MyProjects\HealthConnect\OtherServices\common-models\src\main\java\com\healthconnect\commonmodels\model" />
+    </key>
+    <key name="CopyClassDialog.RECENTS_KEY">
+      <recent name="com.healthconnect.commonmodels.model" />
+      <recent name="com.healthconnect.commonmodels.config" />
+    </key>
+  </component>
+  <component name="RunAnythingCache">
+    <option name="myCommands">
+      <command value="mvn clean install" />
+    </option>
+  </component>
+  <component name="RunManager">
+    <configuration default="true" type="GroovyScriptRunConfiguration" factoryName="Groovy">
+      <setting name="path" value="" />
+      <setting name="vmparams" value="" />
+      <setting name="params" value="" />
+      <setting name="workDir" value="file://$PROJECT_DIR$" />
+      <setting name="debug" value="false" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+  </component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="40a7bece-5691-4828-a618-004e068dce5b" name="Changes" comment="" />
+      <created>1723527665512</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1723527665512</updated>
+    </task>
+    <task id="LOCAL-00001" summary="ApiGateway Security Added">
+      <option name="closed" value="true" />
+      <created>1723721315147</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1723721315147</updated>
+    </task>
+    <option name="localTasksCounter" value="2" />
+    <servers />
+  </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="ApiGateway Security Added" />
+    <option name="LAST_COMMIT_MESSAGE" value="ApiGateway Security Added" />
+  </component>
+</project>
