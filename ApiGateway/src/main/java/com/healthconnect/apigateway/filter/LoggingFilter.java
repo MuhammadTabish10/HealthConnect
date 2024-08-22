@@ -8,6 +8,7 @@ import org.springframework.cloud.gateway.filter.GatewayFilterChain;
 import org.springframework.cloud.gateway.filter.GlobalFilter;
 import org.springframework.core.Ordered;
 import org.springframework.core.io.buffer.DataBuffer;
+import org.springframework.core.io.buffer.DataBufferUtils;
 import org.springframework.http.server.reactive.ServerHttpRequest;
 import org.springframework.http.server.reactive.ServerHttpResponse;
 import org.springframework.http.server.reactive.ServerHttpResponseDecorator;
@@ -17,6 +18,10 @@ import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import reactor.util.annotation.NonNull;
 
+import java.nio.charset.StandardCharsets;
+
+import static com.healthconnect.apigateway.util.LoggingUtils.logBasicInfo;
+import static com.healthconnect.apigateway.util.LoggingUtils.logHeaders;
 import static com.healthconnect.baseservice.constant.LogMessages.*;
 import static com.healthconnect.baseservice.constant.Types.REQUEST_TYPE;
 import static com.healthconnect.baseservice.constant.Types.RESPONSE_TYPE;
@@ -36,17 +41,27 @@ public class LoggingFilter implements GlobalFilter, Ordered {
             @NonNull
             public Mono<Void> writeWith(@NonNull Publisher<? extends DataBuffer> body) {
                 if (body instanceof Flux<? extends DataBuffer> fluxBody) {
+                    // StringBuilder to accumulate the response body
+                    StringBuilder responseBodyBuilder = new StringBuilder();
 
-                    Flux<DataBuffer> loggableBody = fluxBody
-                            .map(dataBuffer -> {
-                                LoggingUtils.logResponseBody(dataBuffer, originalResponse);
-                                return dataBuffer;
-                            });
+                    // Log the complete response body
+                    logBasicInfo(RESPONSE_SENT_HEADER, null, null, RESPONSE_TYPE);
+                    logHeaders(originalResponse);
 
-                    LoggingUtils.logBasicInfo(RESPONSE_SENT_HEADER, null, null, RESPONSE_TYPE);
-                    LoggingUtils.logHeaders(originalResponse);
+                    return super.writeWith(
+                            fluxBody.map(dataBuffer -> {
+                                // Convert DataBuffer to String and append to StringBuilder
+                                byte[] content = new byte[dataBuffer.readableByteCount()];
+                                dataBuffer.read(content);
+                                DataBufferUtils.release(dataBuffer);
+                                responseBodyBuilder.append(new String(content, StandardCharsets.UTF_8));
 
-                    return super.writeWith(loggableBody);
+                                // Create a new DataBuffer to pass downstream
+                                return originalResponse.bufferFactory().wrap(content);
+                            }).doFinally(signalType -> {
+                                LoggingUtils.logCompleteResponseBody(responseBodyBuilder.toString(), originalResponse);
+                            })
+                    );
                 }
                 return super.writeWith(body);
             }
@@ -68,8 +83,8 @@ public class LoggingFilter implements GlobalFilter, Ordered {
     }
 
     private void logRequestDetails(ServerHttpRequest request, ServerWebExchange exchange, GatewayFilterChain chain) {
-        LoggingUtils.logBasicInfo(REQUEST_RECEIVED_HEADER, request.getMethod().name(), request.getURI().toString(), REQUEST_TYPE);
-        LoggingUtils.logHeaders(request);
+        logBasicInfo(REQUEST_RECEIVED_HEADER, request.getMethod().name(), request.getURI().toString(), REQUEST_TYPE);
+        logHeaders(request);
         LoggingUtils.logQueryParams(request);
 
         LoggingUtils.logRequestBody(request, REQUEST_BODY_LABEL)

@@ -2,8 +2,6 @@ package com.healthconnect.apigateway.util;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.core.io.buffer.DataBuffer;
-import org.springframework.core.io.buffer.DataBufferUtils;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.server.reactive.ServerHttpRequest;
 import org.springframework.http.server.reactive.ServerHttpResponse;
@@ -82,14 +80,9 @@ public class LoggingUtils {
                 .then();
     }
 
-    public static void logResponseBody(DataBuffer buffer, ServerHttpResponse response) {
-        DataBuffer bufferCopy = response.bufferFactory().wrap(buffer.asByteBuffer().asReadOnlyBuffer());
-
-        byte[] content = new byte[bufferCopy.readableByteCount()];
-        bufferCopy.read(content);
-        DataBufferUtils.release(bufferCopy);
-
-        String bodyStr = new String(content, StandardCharsets.UTF_8).replaceAll("\\s+", "");
+    public static void logCompleteResponseBody(String responseBody, ServerHttpResponse response) {
+        // Log the complete response body
+        String bodyStr = responseBody.replaceAll("\\s+", "");
         if (!bodyStr.isEmpty()) {
             logger.info(RESPONSE_BODY_LABEL, SECTION_DIVIDER, SECTION_DIVIDER);
             logger.info("📝 {}", bodyStr);
