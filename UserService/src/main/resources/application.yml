@@ -25,7 +25,8 @@ spring:
     ddl-auto: update
     generate-ddl: true
 
-# Swagger Configuration
+
+    # Swagger Configuration
 swagger:
   base-package: com.healthconnect.userservice
   title: User Service API Documentation

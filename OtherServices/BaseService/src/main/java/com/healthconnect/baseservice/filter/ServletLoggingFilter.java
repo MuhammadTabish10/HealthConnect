@@ -23,7 +23,7 @@ public class ServletLoggingFilter implements Filter {
 
     @Override
     public void init(FilterConfig filterConfig) throws ServletException {
-        // No initialization required for now
+        logger.info("Initializing ServletLoggingFilter");
     }
 
     @Override

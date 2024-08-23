@@ -3,6 +3,7 @@ package com.healthconnect.userservice.service.impl;
 import com.healthconnect.baseservice.constant.ErrorMessages;
 import com.healthconnect.baseservice.exception.EntityNotFoundException;
 import com.healthconnect.baseservice.exception.JwtTokenInvalidException;
+import com.healthconnect.baseservice.filter.ServletLoggingFilter;
 import com.healthconnect.baseservice.service.impl.GenericServiceImpl;
 import com.healthconnect.baseservice.util.MappingUtils;
 import com.healthconnect.commonmodels.dto.UserDto;
@@ -100,9 +101,7 @@ public class UserServiceImpl extends GenericServiceImpl<User, UserDto> implement
         logger.info(LOG_MSG_AUTHENTICATING_USER, loginCredentials.getEmail());
 
         MultiValueMap<String, String> body = userUtils.createLoginRequestBody(loginCredentials);
-
         HttpHeaders headers = userUtils.createFormUrlEncodedHeaders();
-
         HttpEntity<MultiValueMap<String, String>> request = new HttpEntity<>(body, headers);
 
         try {
@@ -180,4 +179,5 @@ public class UserServiceImpl extends GenericServiceImpl<User, UserDto> implement
             throw new JwtTokenInvalidException(userUtils.extractErrorDescription(ex.getResponseBodyAsString()));
         }
     }
+
 }

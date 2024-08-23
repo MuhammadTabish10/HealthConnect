@@ -7,6 +7,7 @@ spring:
   application:
     name: API-GATEWAY
 
+
   security:
     oauth2:
       resourceserver:
