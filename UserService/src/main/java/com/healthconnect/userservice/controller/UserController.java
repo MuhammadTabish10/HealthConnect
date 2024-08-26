@@ -46,6 +46,20 @@ public class UserController extends GenericController<UserDto> {
     }
 
     @Override
+    @PutMapping(ApiEndpoints.ID)
+    public ResponseEntity<UserDto> update(@PathVariable Long userId, @RequestBody UserDto userDto) {
+        UserDto user = userService.update(userDto,userId);
+        return new ResponseEntity<>(user, HttpStatus.OK);
+    }
+
+    @Override
+    @DeleteMapping(ApiEndpoints.ID)
+    public ResponseEntity<Void> delete(@PathVariable Long userId) {
+        userService.delete(userId);
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    }
+
+    @Override
     @PostMapping
     public ResponseEntity<UserDto> create(@RequestBody UserDto dto) {
         return ResponseEntity.status(HttpStatus.METHOD_NOT_ALLOWED).build();

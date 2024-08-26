@@ -2,9 +2,12 @@ package com.healthconnect.userservice.util;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.healthconnect.baseservice.exception.EntityNotFoundException;
 import com.healthconnect.userservice.dto.LoginCredentials;
 import com.healthconnect.userservice.dto.TokenResponse;
 import jakarta.ws.rs.core.Response;
+import org.keycloak.admin.client.Keycloak;
+import org.keycloak.representations.idm.UserRepresentation;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
@@ -16,6 +19,7 @@ import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.Map;
 
+import static com.healthconnect.userservice.constant.LogMessages.USER_NOT_FOUND_IN_KEYCLOAK;
 import static com.healthconnect.userservice.constant.UserConstants.*;
 
 @Component
@@ -28,9 +32,11 @@ public class UserUtils {
     private String clientSecret;
 
     private final ObjectMapper objectMapper;
+    private final Keycloak keycloak;
 
-    public UserUtils(ObjectMapper objectMapper) {
+    public UserUtils(ObjectMapper objectMapper, Keycloak keycloak) {
         this.objectMapper = objectMapper;
+        this.keycloak = keycloak;
     }
 
     public static String extractUserIdFromResponse(Response response) {
@@ -45,6 +51,17 @@ public class UserUtils {
             return responseBody;
         }
     }
+
+    public void enableOrDisableUser(String realm, String userId, Boolean isActive) {
+        UserRepresentation user = keycloak.realm(realm).users().get(userId).toRepresentation();
+        if (user != null) {
+            user.setEnabled(isActive);
+            keycloak.realm(realm).users().get(userId).update(user);
+        } else {
+            throw new EntityNotFoundException(USER_NOT_FOUND_IN_KEYCLOAK);
+        }
+    }
+
 
     public HttpHeaders createFormUrlEncodedHeaders() {
         HttpHeaders headers = new HttpHeaders();

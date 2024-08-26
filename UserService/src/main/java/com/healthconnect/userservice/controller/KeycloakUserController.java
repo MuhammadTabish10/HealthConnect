@@ -1,5 +1,6 @@
 package com.healthconnect.userservice.controller;
 
+import com.healthconnect.userservice.constant.ApiEndpoints;
 import com.healthconnect.userservice.service.KeycloakAdminService;
 import jakarta.ws.rs.core.Response;
 import org.keycloak.representations.idm.UserRepresentation;
@@ -8,8 +9,10 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+import static com.healthconnect.userservice.constant.LogMessages.*;
+
 @RestController
-@RequestMapping("/api/keycloak/users")
+@RequestMapping(ApiEndpoints.KEYCLOAK)
 public class KeycloakUserController {
 
     private final KeycloakAdminService keycloakAdminService;
@@ -26,32 +29,32 @@ public class KeycloakUserController {
                                           @RequestParam String password) {
         Response response = keycloakAdminService.addUser(realm, email, firstName, lastName, password);
         if (response.getStatus() == Response.Status.CREATED.getStatusCode()) {
-            return ResponseEntity.status(201).body("User created successfully.");
+            return ResponseEntity.status(201).body(USER_CREATED_SUCCESSFULLY);
         } else {
-            return ResponseEntity.status(response.getStatus()).body("User creation failed.");
+            return ResponseEntity.status(response.getStatus()).body(USER_CREATION_FAILED);
         }
     }
 
     @GetMapping
-    public List<UserRepresentation> getAllUsers(@RequestParam String realm) {
-        return keycloakAdminService.getAllUsers(realm);
+    public ResponseEntity<List<UserRepresentation>> getAllUsers() {
+        return ResponseEntity.ok(keycloakAdminService.getAllUsers());
     }
 
-    @GetMapping("/{userId}")
-    public ResponseEntity<UserRepresentation> getUserById(@RequestParam String realm, @PathVariable String userId) {
-        UserRepresentation user = keycloakAdminService.getUserById(realm, userId);
+    @GetMapping(ApiEndpoints.ID)
+    public ResponseEntity<UserRepresentation> getUserById(@PathVariable String userId) {
+        UserRepresentation user = keycloakAdminService.getUserById(userId);
         return ResponseEntity.ok(user);
     }
 
-    @PutMapping("/{userId}")
-    public ResponseEntity<String> updateUser(@RequestParam String realm, @PathVariable String userId, @RequestBody UserRepresentation user) {
-        keycloakAdminService.updateUser(realm, userId, user);
-        return ResponseEntity.ok("User updated successfully.");
+    @PutMapping(ApiEndpoints.ID)
+    public ResponseEntity<String> updateUser(@PathVariable String userId, @RequestBody UserRepresentation user) {
+        keycloakAdminService.updateUser(userId, user);
+        return ResponseEntity.ok(USER_UPDATED_SUCCESSFULLY);
     }
 
-    @DeleteMapping("/{userId}")
-    public ResponseEntity<String> deleteUser(@RequestParam String realm, @PathVariable String userId) {
-        keycloakAdminService.deleteUser(realm, userId);
-        return ResponseEntity.ok("User deleted successfully.");
+    @DeleteMapping(ApiEndpoints.ID)
+    public ResponseEntity<String> deleteUser(@PathVariable String userId) {
+        keycloakAdminService.deleteUser(userId);
+        return ResponseEntity.ok(USER_DELETED_SUCCESSFULLY);
     }
 }
