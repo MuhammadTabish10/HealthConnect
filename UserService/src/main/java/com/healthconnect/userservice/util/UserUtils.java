@@ -4,6 +4,7 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.healthconnect.userservice.dto.LoginCredentials;
 import com.healthconnect.userservice.dto.TokenResponse;
+import jakarta.ws.rs.core.Response;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
@@ -30,6 +31,10 @@ public class UserUtils {
 
     public UserUtils(ObjectMapper objectMapper) {
         this.objectMapper = objectMapper;
+    }
+
+    public static String extractUserIdFromResponse(Response response) {
+        return response.getLocation().getPath().replaceAll(".*/([^/]+)$", "$1");
     }
 
     public String extractErrorDescription(String responseBody) {

@@ -87,7 +87,7 @@ public class SecurityConfig {
                 .authorizeHttpRequests(authorizeRequests ->
                         authorizeRequests
                                 .requestMatchers("/api/v1/users/login").permitAll()  // Allow everyone to access /login
-                                .requestMatchers("/api/v1/users/**").hasRole("ADMIN") // Only allow users with ADMIN role to access /users/**
+                                .requestMatchers("/api/v1/users/**", "/api/keycloak/users/**").hasRole("ADMIN") // Only allow users with ADMIN role to access /users/**
                                 .anyRequest().authenticated()                         // Require authentication for all other endpoints
                 )
                 .addFilterBefore(jwtTokenFilter, UsernamePasswordAuthenticationFilter.class);  // Add your custom filter before the default auth filter

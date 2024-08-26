@@ -7,14 +7,10 @@ spring:
   application:
     name: API-GATEWAY
 
-
+  # Security Configuration
   security:
     oauth2:
       resourceserver:
         jwt:
           issuer-uri: http://localhost:8080/realms/healthconnect-realm
           jwk-set-uri: http://localhost:8080/realms/healthconnect-realm/protocol/openid-connect/certs
-
-#baseservice:
-#    security:
-#      enabled: false

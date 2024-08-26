@@ -1,7 +1,6 @@
 package com.healthconnect.commonmodels.dto;
 
 import com.healthconnect.commonmodels.enums.Gender;
-import com.healthconnect.commonmodels.model.Role;
 import jakarta.validation.constraints.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -9,7 +8,6 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
-import java.util.Set;
 
 @Data
 @NoArgsConstructor
@@ -19,8 +17,11 @@ public class UserDto {
     private Long id;
     private LocalDateTime createdAt;
 
-    @NotBlank(message = "Name is mandatory")
-    private String name;
+    @NotBlank(message = "First Name is mandatory")
+    private String firstName;
+
+    @NotBlank(message = "Last Name is mandatory")
+    private String lastName;
 
     @Min(value = 0, message = "Age must be a positive number")
     private Integer age;
@@ -44,5 +45,5 @@ public class UserDto {
     private String address;
     private String city;
     private Boolean isActive;
-    private Set<Role> roles;
+    private String keycloakUserId;
 }

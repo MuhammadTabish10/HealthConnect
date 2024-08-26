@@ -42,6 +42,7 @@
         <httpclient.version>4.5.13</httpclient.version>
         <woodstox-core.version>6.4.0</woodstox-core.version>
         <spring-doc.version>2.6.0</spring-doc.version>
+        <keycloak.version>25.0.1</keycloak.version>
     </properties>
     <dependencies>
         <dependency>
@@ -55,6 +56,17 @@
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-web</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.keycloak</groupId>
+            <artifactId>keycloak-admin-client</artifactId>
+            <version>${keycloak.version}</version>
+            <exclusions>
+                <exclusion>
+                    <groupId>org.apache.james</groupId>
+                    <artifactId>apache-mime4j-core</artifactId>
+                </exclusion>
+            </exclusions>
         </dependency>
         <dependency>
             <groupId>org.springframework.cloud</groupId>

@@ -7,6 +7,7 @@ spring:
   application:
     name: USER-SERVICE
 
+  # Security Configuration
   security:
     oauth2:
       resourceserver:
@@ -19,14 +20,15 @@ spring:
     username: root
     password: root
     driver-class-name: com.mysql.cj.jdbc.Driver
+
+  # JPA Configuration
   jpa:
     hibernate:
       use-new-id-generator-mappings: false
     ddl-auto: update
     generate-ddl: true
 
-
-    # Swagger Configuration
+# Swagger Configuration
 swagger:
   base-package: com.healthconnect.userservice
   title: User Service API Documentation
@@ -38,7 +40,7 @@ management:
   endpoints:
     web:
       exposure:
-        include:
+        include: health, metrics, info
   endpoint:
     health:
       show-details: always
@@ -53,4 +55,13 @@ app:
   client-id: "healthconnect-client"
   client-secret: "CDVXONhkCSSlcm8dpfQ64JVaw5HtggS8"
 
+keycloak:
+  auth-server-url: http://localhost:8080
+  realm: healthconnect-realm
+  resource: healthconnect-client
+  credentials:
+    secret: CDVXONhkCSSlcm8dpfQ64JVaw5HtggS8
 
+keycloak-admin:
+  username: tabish
+  password: 123

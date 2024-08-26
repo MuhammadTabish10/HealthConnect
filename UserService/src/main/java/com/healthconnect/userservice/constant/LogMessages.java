@@ -6,11 +6,15 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class LogMessages {
 
-    public static final String REGISTERING_USER_LOG = "Registering user with email: %s";
-    public static final String USER_REGISTERED_SUCCESS_LOG = "User with email: %s registered successfully";
     public static final String ROLE_NOT_FOUND_LOG = "Role %s not found for user registration";
     public static final String AUTHENTICATING_USER_LOG = "Attempting to authenticate user with email: %s";
     public static final String AUTHENTICATION_SUCCESS_LOG = "User with email: %s authenticated successfully, JWT token generated";
+    public static final String REGISTERING_USER_LOG = "Registering user with email: {}";
+    public static final String KEYCLOAK_USER_CREATION_ERROR = "Error creating user in Keycloak for email: {}";
+    public static final String KEYCLOAK_USER_CREATION_FAILED = "Failed to create user in Keycloak. Response status: {}";
+    public static final String USER_REGISTERED_SUCCESS_LOG = "User registered successfully with email: {}";
+    public static final String FAILED_TO_CREATE_USER_IN_KEYCLOAK_LOG = "Failed to create user in Keycloak";
+    public static final String FAILED_TO_CREATE_USER_IN_KEYCLOAK_STATUS_LOG = "Failed to create user in Keycloak. Response status: ";
 
 
     public static final String LOG_MSG_USER_LOGGED_OUT_SUCCESS = "User logged out successfully with refresh token {}";

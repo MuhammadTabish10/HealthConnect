@@ -1,23 +1,21 @@
 package com.healthconnect.userservice.service.impl;
 
-import com.healthconnect.baseservice.constant.ErrorMessages;
-import com.healthconnect.baseservice.exception.EntityNotFoundException;
+import com.healthconnect.baseservice.exception.EntitySaveException;
 import com.healthconnect.baseservice.exception.JwtTokenInvalidException;
-import com.healthconnect.baseservice.filter.ServletLoggingFilter;
 import com.healthconnect.baseservice.service.impl.GenericServiceImpl;
 import com.healthconnect.baseservice.util.MappingUtils;
 import com.healthconnect.commonmodels.dto.UserDto;
-import com.healthconnect.commonmodels.model.Role;
 import com.healthconnect.commonmodels.model.User;
-import com.healthconnect.commonmodels.repository.RoleRepository;
 import com.healthconnect.commonmodels.repository.UserRepository;
 import com.healthconnect.userservice.constant.LogMessages;
 import com.healthconnect.userservice.dto.LoginCredentials;
 import com.healthconnect.userservice.dto.TokenResponse;
 import com.healthconnect.userservice.repository.UserDataRepository;
+import com.healthconnect.userservice.service.KeycloakAdminService;
 import com.healthconnect.userservice.service.UserService;
 import com.healthconnect.userservice.util.UserUtils;
 import jakarta.transaction.Transactional;
+import jakarta.ws.rs.core.Response;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,12 +28,11 @@ import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestTemplate;
 
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.Optional;
 
 import static com.healthconnect.userservice.constant.LogMessages.*;
-import static com.healthconnect.userservice.constant.UserConstants.ROLE_CLIENT;
+import static com.healthconnect.userservice.util.UserUtils.extractUserIdFromResponse;
 
 @Service
 public class UserServiceImpl extends GenericServiceImpl<User, UserDto> implements UserService {
@@ -52,10 +49,14 @@ public class UserServiceImpl extends GenericServiceImpl<User, UserDto> implement
     @Value("${app.client-secret}")
     private String clientSecret;
 
+    @Value("${keycloak.realm}")
+    private String realm;
+
+
     private static final Logger logger = LoggerFactory.getLogger(UserServiceImpl.class);
 
     private final UserRepository userRepository;
-    private final RoleRepository roleRepository;
+    private final KeycloakAdminService keycloakAdminService;
     private final UserUtils userUtils;
     private final MappingUtils mappingUtils;
     private final PasswordEncoder passwordEncoder;
@@ -63,11 +64,11 @@ public class UserServiceImpl extends GenericServiceImpl<User, UserDto> implement
 
     @Autowired
     public UserServiceImpl(UserDataRepository userDataRepository, MappingUtils mappingUtils, UserRepository userRepository,
-                           RoleRepository roleRepository, UserUtils userUtils, MappingUtils mappingUtils1,
+                           KeycloakAdminService keycloakAdminService, UserUtils userUtils, MappingUtils mappingUtils1,
                            PasswordEncoder passwordEncoder, RestTemplate restTemplate) {
         super(userDataRepository, mappingUtils, User.class, UserDto.class);
         this.userRepository = userRepository;
-        this.roleRepository = roleRepository;
+        this.keycloakAdminService = keycloakAdminService;
         this.userUtils = userUtils;
         this.mappingUtils = mappingUtils1;
         this.passwordEncoder = passwordEncoder;
@@ -79,22 +80,34 @@ public class UserServiceImpl extends GenericServiceImpl<User, UserDto> implement
     public UserDto registerUser(UserDto userDto) {
         logger.info(LogMessages.REGISTERING_USER_LOG, userDto.getEmail());
 
+        Response keycloakResponse;
+        try (Response response = keycloakAdminService.addUser(
+                realm,
+                userDto.getEmail(),
+                userDto.getFirstName(),
+                userDto.getLastName(),
+                userDto.getPassword())) {
+            keycloakResponse = response;
+        } catch (Exception e) {
+            logger.error(LogMessages.KEYCLOAK_USER_CREATION_ERROR, userDto.getEmail(), e);
+            throw new EntitySaveException(FAILED_TO_CREATE_USER_IN_KEYCLOAK_LOG, e);
+        }
+
+        if (keycloakResponse.getStatus() != Response.Status.CREATED.getStatusCode()) {
+            logger.error(LogMessages.KEYCLOAK_USER_CREATION_FAILED, keycloakResponse.getStatus());
+            throw new EntitySaveException(FAILED_TO_CREATE_USER_IN_KEYCLOAK_STATUS_LOG + keycloakResponse.getStatus());
+        }
+
+        String keycloakUserId = extractUserIdFromResponse(keycloakResponse);
         User user = mappingUtils.mapToEntity(userDto, User.class);
-        user.setPassword(passwordEncoder.encode(user.getPassword()));
-
-        Role role = roleRepository.findByName(ROLE_CLIENT)
-                .orElseThrow(() -> {
-                    logger.error(LogMessages.ROLE_NOT_FOUND_LOG, ROLE_CLIENT);
-                    return new EntityNotFoundException(
-                            String.format(ErrorMessages.ENTITY_NOT_FOUND_BY_NAME, Role.class.getSimpleName(), ROLE_CLIENT));
-                });
-
-        user.setRoles(Collections.singleton(role));
+        user.setPassword(passwordEncoder.encode(userDto.getPassword()));
+        user.setKeycloakUserId(keycloakUserId);
         User savedUser = userRepository.save(user);
 
         logger.info(LogMessages.USER_REGISTERED_SUCCESS_LOG, userDto.getEmail());
         return mappingUtils.mapToDto(savedUser, UserDto.class);
     }
+
 
     @Override
     public TokenResponse loginUserAndReturnToken(LoginCredentials loginCredentials) {

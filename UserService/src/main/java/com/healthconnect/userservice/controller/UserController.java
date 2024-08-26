@@ -28,6 +28,12 @@ public class UserController extends GenericController<UserDto> {
         return ResponseEntity.ok(tokenResponse);
     }
 
+    @PostMapping(ApiEndpoints.REGISTER)
+    public ResponseEntity<UserDto> registerUser(@RequestBody UserDto dto) {
+        UserDto userDto = userService.registerUser(dto);
+        return ResponseEntity.ok(userDto);
+    }
+
     @PostMapping(ApiEndpoints.REFRESH_TOKEN)
     public ResponseEntity<TokenResponse> getAccessTokenByRefreshToken(@RequestParam String refreshToken) {
         TokenResponse tokenResponse = userService.refreshAccessToken(refreshToken);
