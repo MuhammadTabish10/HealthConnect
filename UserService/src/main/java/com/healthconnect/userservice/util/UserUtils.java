@@ -7,6 +7,9 @@ import com.healthconnect.userservice.dto.LoginCredentials;
 import com.healthconnect.userservice.dto.TokenResponse;
 import jakarta.ws.rs.core.Response;
 import org.keycloak.admin.client.Keycloak;
+import org.keycloak.admin.client.resource.RealmResource;
+import org.keycloak.admin.client.resource.UserResource;
+import org.keycloak.representations.idm.CredentialRepresentation;
 import org.keycloak.representations.idm.UserRepresentation;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpHeaders;
@@ -15,7 +18,9 @@ import org.springframework.stereotype.Component;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 
+import java.security.SecureRandom;
 import java.time.LocalDateTime;
+import java.util.Base64;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -30,6 +35,9 @@ public class UserUtils {
 
     @Value("${keycloak.credentials.secret}")
     private String clientSecret;
+
+    @Value("${keycloak.realm}")
+    private String realm;
 
     private final ObjectMapper objectMapper;
     private final Keycloak keycloak;
@@ -60,6 +68,18 @@ public class UserUtils {
         } else {
             throw new EntityNotFoundException(USER_NOT_FOUND_IN_KEYCLOAK);
         }
+    }
+
+    public void resetUserPassword(String userId, String newPassword) {
+        RealmResource realmResource = keycloak.realm(realm);
+        UserResource userResource = realmResource.users().get(userId);
+
+        CredentialRepresentation credential = new CredentialRepresentation();
+        credential.setTemporary(false);
+        credential.setType(CredentialRepresentation.PASSWORD);
+        credential.setValue(newPassword);
+
+        userResource.resetPassword(credential);
     }
 
 
@@ -107,5 +127,12 @@ public class UserUtils {
         body.add(CLIENT_ID, clientId);
         body.add(CLIENT_SECRET, clientSecret);
         return body;
+    }
+
+    public String generateResetToken() {
+        SecureRandom secureRandom = new SecureRandom();
+        byte[] tokenBytes = new byte[4];
+        secureRandom.nextBytes(tokenBytes);
+        return Base64.getUrlEncoder().withoutPadding().encodeToString(tokenBytes).substring(0, 6);
     }
 }

@@ -33,4 +33,22 @@ public class LogMessages {
     public static final String ERROR_MSG_AUTHENTICATION_FAILED = "Authentication failed, please check your credentials and try again.";
     public static final String ERROR_MSG_UNEXPECTED_ERROR_OCCURRED = "An unexpected error occurred: ";
     public static final String ERROR_MSG_UNEXPECTED_RESPONSE = "Unexpected response: ";
+
+
+    public static final String PASSWORD_RESET_REQUEST_INITIATED = "Password reset requested for email: {}";
+    public static final String PASSWORD_RESET_TOKEN_GENERATED = "Generated password reset token for user: {}";
+    public static final String PASSWORD_RESET_EMAIL_SENT = "Password reset email sent to: {}";
+    public static final String PASSWORD_RESET_SUCCESS = "Password reset successfully for user: {}";
+    public static final String PASSWORD_DO_NOT_MATCH = "Passwords do not match for the reset password request.";
+    public static final String INVALID_OR_EXPIRED_TOKEN = "Invalid or expired reset token for the reset password request.";
+    public static final String PASSWORD_RESET_EMAIL_SUCCESS = "Password reset email sent to %s (User: %s)";
+    public static final String PASSWORD_RESET_EMAIL_FAILED = "Failed to send password reset email to %s";
+
+    public static final String ERROR_USER_NOT_FOUND_AT_EMAIL = "User not found with email: %s";
+    public static final String ERROR_PASSWORDS_DO_NOT_MATCH = "New password and confirm password do not match";
+    public static final String ERROR_INVALID_OR_EXPIRED_TOKEN = "Invalid or expired reset token";
+    public static final String ERROR_TOKEN_EXPIRED = "Reset token has expired";
+    public static final String PASSWORD_RESET_EMAIL_SENT_SUCCESS = "Password reset email sent to %s successfully!";
+    public static final String PASSWORD_RESET_SUCCESS_MSG = "Password has been reset successfully.";
+
 }

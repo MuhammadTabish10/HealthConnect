@@ -12,6 +12,7 @@ import java.util.Optional;
 @Repository
 public interface UserRepository extends JpaRepository<User, Long> {
     Optional<User> findByEmailAndIsActiveIsTrue(String email);
+    Optional<User> findByResetToken(String token);
 
     @Modifying
     @Query("UPDATE User us SET us.isActive = :status WHERE us.id = :id")

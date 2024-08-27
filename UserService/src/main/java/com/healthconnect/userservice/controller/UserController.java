@@ -4,6 +4,8 @@ import com.healthconnect.baseservice.controller.GenericController;
 import com.healthconnect.commonmodels.dto.UserDto;
 import com.healthconnect.userservice.constant.ApiEndpoints;
 import com.healthconnect.userservice.dto.LoginCredentials;
+import com.healthconnect.userservice.dto.PasswordReset;
+import com.healthconnect.userservice.dto.PasswordResetRequest;
 import com.healthconnect.userservice.dto.TokenResponse;
 import com.healthconnect.userservice.service.UserService;
 import jakarta.validation.Valid;
@@ -57,6 +59,18 @@ public class UserController extends GenericController<UserDto> {
     public ResponseEntity<Void> delete(@PathVariable Long userId) {
         userService.delete(userId);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    }
+
+    @PostMapping(ApiEndpoints.FORGOT_PASSWORD)
+    public ResponseEntity<String> requestPasswordReset(@Valid @RequestBody PasswordResetRequest request) {
+        String responseMessage = userService.requestPasswordReset(request.getEmail());
+        return ResponseEntity.status(HttpStatus.OK).body(responseMessage);
+    }
+
+    @PostMapping(ApiEndpoints.RESET_PASSWORD)
+    public ResponseEntity<String> resetPassword(@Valid @RequestBody PasswordReset reset) {
+        String responseMessage = userService.resetPassword(reset.getToken(), reset.getNewPassword(), reset.getConfirmPassword());
+        return ResponseEntity.status(HttpStatus.OK).body(responseMessage);
     }
 
     @Override

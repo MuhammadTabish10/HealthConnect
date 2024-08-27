@@ -58,6 +58,16 @@ public class GlobalExceptionHandler {
         return buildResponseEntity(ex.getMessage(), HttpStatus.FORBIDDEN);
     }
 
+    @ExceptionHandler(InvalidOrExpiredTokenException.class)
+    public ResponseEntity<ExceptionMessage<String>> handleInvalidOrExpiredTokenException(InvalidOrExpiredTokenException ex) {
+        return buildResponseEntity(ex.getMessage(), HttpStatus.UNAUTHORIZED);
+    }
+
+    @ExceptionHandler(PasswordDoNotMatchException.class)
+    public ResponseEntity<ExceptionMessage<String>> handlePasswordDoNotMatchException(PasswordDoNotMatchException ex) {
+        return buildResponseEntity(ex.getMessage(), HttpStatus.BAD_REQUEST);
+    }
+
     @ExceptionHandler(Exception.class)
     public ResponseEntity<ExceptionMessage<String>> handleGenericException(Exception ex) {
         return buildResponseEntity(ErrorMessages.UNEXPECTED_ERROR + ex.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);

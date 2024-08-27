@@ -11,4 +11,6 @@ public interface UserService extends GenericService<UserDto> {
     TokenResponse loginUserAndReturnToken(LoginCredentials loginCredentials);
     ResponseEntity<String> logoutUser(String refreshToken);
     TokenResponse refreshAccessToken(String refreshToken);
+    String requestPasswordReset(String email);
+    String resetPassword(String token, String newPassword, String confirmPassword);
 }

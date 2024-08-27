@@ -13,4 +13,6 @@ public class ApiEndpoints {
     public static final String USERS = BASE_API + "/users";
     public static final String KEYCLOAK = BASE_API + "/keycloak/users";
     public static final String ID = "/{userId}";
+    public static final String FORGOT_PASSWORD = "/forgot-password";
+    public static final String RESET_PASSWORD = "/reset-password";
 }

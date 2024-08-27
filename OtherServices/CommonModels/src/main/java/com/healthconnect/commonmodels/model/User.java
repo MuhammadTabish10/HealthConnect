@@ -37,8 +37,11 @@ public class User extends Auditable {
     @Column(nullable = false, unique = true)
     private String email;
 
-    @Column(nullable = false)
+    @Transient
     private String password;
+
+    private String resetToken;
+    private LocalDateTime resetTokenExpiry;
 
     private String phoneNumber;
     private String cnic;

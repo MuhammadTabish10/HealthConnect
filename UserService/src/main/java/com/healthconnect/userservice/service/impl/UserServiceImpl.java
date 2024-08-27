@@ -11,6 +11,7 @@ import com.healthconnect.commonmodels.repository.UserRepository;
 import com.healthconnect.userservice.dto.LoginCredentials;
 import com.healthconnect.userservice.dto.TokenResponse;
 import com.healthconnect.userservice.repository.UserDataRepository;
+import com.healthconnect.userservice.service.EmailService;
 import com.healthconnect.userservice.service.KeycloakAdminService;
 import com.healthconnect.userservice.service.UserService;
 import com.healthconnect.userservice.util.UserUtils;
@@ -25,14 +26,15 @@ import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestTemplate;
 
+import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.Optional;
+import java.util.UUID;
 
 import static com.healthconnect.userservice.constant.LogMessages.*;
 import static com.healthconnect.userservice.util.UserUtils.extractUserIdFromResponse;
@@ -55,18 +57,18 @@ public class UserServiceImpl extends GenericServiceImpl<User, UserDto> implement
     private final KeycloakAdminService keycloakAdminService;
     private final UserUtils userUtils;
     private final MappingUtils mappingUtils;
-    private final PasswordEncoder passwordEncoder;
+    private final EmailService emailService;
     private final RestTemplate restTemplate;
 
     public UserServiceImpl(UserDataRepository userDataRepository, MappingUtils mappingUtils,
                            UserRepository userRepository, KeycloakAdminService keycloakAdminService,
-                           UserUtils userUtils, PasswordEncoder passwordEncoder, RestTemplate restTemplate) {
+                           UserUtils userUtils, EmailService emailService, RestTemplate restTemplate) {
         super(userDataRepository, mappingUtils, User.class, UserDto.class);
         this.userRepository = userRepository;
         this.keycloakAdminService = keycloakAdminService;
         this.userUtils = userUtils;
         this.mappingUtils = mappingUtils;
-        this.passwordEncoder = passwordEncoder;
+        this.emailService = emailService;
         this.restTemplate = restTemplate;
     }
 
@@ -79,7 +81,6 @@ public class UserServiceImpl extends GenericServiceImpl<User, UserDto> implement
 
         String keycloakUserId = extractUserIdFromResponse(keycloakResponse);
         User user = mappingUtils.mapToEntity(userDto, User.class);
-        user.setPassword(passwordEncoder.encode(userDto.getPassword()));
         user.setKeycloakUserId(keycloakUserId);
         User savedUser = userRepository.save(user);
 
@@ -164,6 +165,60 @@ public class UserServiceImpl extends GenericServiceImpl<User, UserDto> implement
             throw new JwtTokenInvalidException(userUtils.extractErrorDescription(ex.getResponseBodyAsString()));
         }
     }
+
+    @Override
+    @Transactional
+    public String requestPasswordReset(String email) {
+        logger.info(PASSWORD_RESET_REQUEST_INITIATED, email);
+
+        User user = userRepository.findByEmailAndIsActiveIsTrue(email)
+                .orElseThrow(() -> {
+                    logger.error(String.format(ERROR_USER_NOT_FOUND_AT_EMAIL, email));
+                    return new EntityNotFoundException(String.format(ERROR_USER_NOT_FOUND_AT_EMAIL, email));
+                });
+
+        String resetToken = userUtils.generateResetToken();
+        user.setResetToken(resetToken);
+        user.setResetTokenExpiry(LocalDateTime.now().plusMinutes(5));
+
+        userRepository.save(user);
+        logger.info(PASSWORD_RESET_TOKEN_GENERATED, user.getEmail());
+
+        emailService.sendPasswordResetEmail(user.getEmail(), user.getFirstName(), resetToken);
+        logger.info(PASSWORD_RESET_EMAIL_SENT, user.getEmail());
+
+        return String.format(PASSWORD_RESET_EMAIL_SENT_SUCCESS, user.getEmail());
+    }
+
+    @Override
+    @Transactional
+    public String resetPassword(String token, String newPassword, String confirmPassword) {
+        if (!newPassword.equals(confirmPassword)) {
+            logger.error(PASSWORD_DO_NOT_MATCH);
+            throw new PasswordDoNotMatchException(ERROR_PASSWORDS_DO_NOT_MATCH);
+        }
+
+        User user = userRepository.findByResetToken(token)
+                .orElseThrow(() -> {
+                    logger.error(INVALID_OR_EXPIRED_TOKEN);
+                    return new EntityNotFoundException(ERROR_INVALID_OR_EXPIRED_TOKEN);
+                });
+
+        if (user.getResetTokenExpiry().isBefore(LocalDateTime.now())) {
+            logger.error(ERROR_TOKEN_EXPIRED);
+            throw new InvalidOrExpiredTokenException(ERROR_TOKEN_EXPIRED);
+        }
+
+        userUtils.resetUserPassword(user.getKeycloakUserId(), newPassword);
+
+        user.setResetToken(null);
+        user.setResetTokenExpiry(null);
+        userRepository.save(user);
+
+        logger.info(PASSWORD_RESET_SUCCESS, user.getEmail());
+        return PASSWORD_RESET_SUCCESS_MSG;
+    }
+
 
     @Override
     @Transactional

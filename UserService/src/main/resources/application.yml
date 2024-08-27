@@ -7,6 +7,19 @@ spring:
   application:
     name: USER-SERVICE
 
+  # Email Configuration
+  mail:
+    host: smtp.gmail.com
+    port: 587
+    username: tabishrashid36@gmail.com
+    password: mypk umvd nejp acrv
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls:
+            enable: true
+
   # Security Configuration
   security:
     oauth2:
@@ -61,3 +74,5 @@ keycloak:
     secret: CDVXONhkCSSlcm8dpfQ64JVaw5HtggS8
     username: muhammadtabish05@gmail.com
     password: 123
+
+

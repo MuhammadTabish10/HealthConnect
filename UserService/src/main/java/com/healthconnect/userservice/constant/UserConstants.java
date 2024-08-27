@@ -18,4 +18,5 @@ public class UserConstants {
     public static final String SESSION_STATE = "session_state";
     public static final String SCOPE = "scope";
     public static final String ROLE_CLIENT = "CLIENT";
+    public static final String ENCODING = "UTF-8";
 }
