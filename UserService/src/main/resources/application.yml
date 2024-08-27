@@ -52,8 +52,6 @@ management:
 app:
   token-url: "http://localhost:8080/realms/healthconnect-realm/protocol/openid-connect/token"
   logout-url: "http://localhost:8080/realms/healthconnect-realm/protocol/openid-connect/logout"
-  client-id: "healthconnect-client"
-  client-secret: "CDVXONhkCSSlcm8dpfQ64JVaw5HtggS8"
 
 keycloak:
   auth-server-url: http://localhost:8080
@@ -61,7 +59,5 @@ keycloak:
   resource: healthconnect-client
   credentials:
     secret: CDVXONhkCSSlcm8dpfQ64JVaw5HtggS8
-
-keycloak-admin:
-  username: muhammadtabish05@gmail.com
-  password: 123
+    username: muhammadtabish05@gmail.com
+    password: 123

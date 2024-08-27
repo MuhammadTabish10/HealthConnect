@@ -22,17 +22,17 @@ public class KeycloakAdminConfig {
     @Value("${keycloak.credentials.secret}")
     private String clientSecret;
 
-    @Value("${keycloak-admin.username}")
+    @Value("${keycloak.credentials.username}")
     private String adminUsername;
 
-    @Value("${keycloak-admin.password}")
+    @Value("${keycloak.credentials.password}")
     private String adminPassword;
 
     @Bean
     public Keycloak keycloakInstance() {
         return KeycloakBuilder.builder()
                 .serverUrl(authServerUrl)
-                .realm("healthconnect-realm")  // Use 'healthconnect-realm' realm for admin actions
+                .realm(realm)
                 .clientId(clientId)
                 .clientSecret(clientSecret)
                 .username(adminUsername)

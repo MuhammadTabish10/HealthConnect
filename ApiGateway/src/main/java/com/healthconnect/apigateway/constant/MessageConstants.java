@@ -20,6 +20,7 @@ public class MessageConstants {
     public static final String CONFIGURING_REACTIVE_JWT_DECODER = "Creating ReactiveJwtDecoder with issuer URI: {}";
     public static final String CONFIGURING_JWT_AUTHENTICATION_CONVERTER = "Configuring JWT authentication converter";
 
+
     // JwtUtils Log Messages
     public static final String SIGNING_KEY_INITIALIZED = "Signing key initialized";
     public static final String JWT_TOKEN_EXPIRED = "JWT Token is expired";
@@ -32,5 +33,10 @@ public class MessageConstants {
 
     // GatewayConfig Log Messages
     public static final String SETTING_UP_ROUTES_LOG = "Setting up API Gateway routes";
+    public static final String REDIS_RATE_LIMITER_INITIALIZING = "RedisRateLimiter is being initialized.";
+    public static final String KEY_RESOLVER_INITIALIZING = "KeyResolver is being initialized.";
+    public static final String REDIS_CONNECTION_SUCCESS = "Redis is connected and functional.";
+    public static final String REDIS_CONNECTION_FAILURE = "Redis might not be connected. Please check Redis connection.";
+    public static final String REDIS_CONNECTION_ERROR = "Error connecting to Redis: ";
 
 }

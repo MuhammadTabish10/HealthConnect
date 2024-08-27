@@ -77,6 +77,8 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 @EnableWebSecurity
 public class SecurityConfig {
 
+    private static final String ROLE_ADMIN = "ADMIN";
+
     @Autowired
     private JwtTokenFilter jwtTokenFilter;
 
@@ -86,12 +88,14 @@ public class SecurityConfig {
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(authorizeRequests ->
                         authorizeRequests
-                                .requestMatchers("/api/v1/users/login").permitAll()  // Allow everyone to access /login
-                                .requestMatchers("/api/v1/users/**", "/api/v1/keycloak/users").hasRole("ADMIN") // Only allow users with ADMIN role to access /users/**
-                                .anyRequest().authenticated()                         // Require authentication for all other endpoints
+                                .requestMatchers("/api/v1/users/login").permitAll()
+                                .requestMatchers("/api/v1/users/**", "/api/v1/keycloak/users").hasRole(ROLE_ADMIN)
+                                .anyRequest().authenticated()
                 )
-                .addFilterBefore(jwtTokenFilter, UsernamePasswordAuthenticationFilter.class);  // Add your custom filter before the default auth filter
+                .addFilterBefore(jwtTokenFilter, UsernamePasswordAuthenticationFilter.class);
 
         return http.build();
     }
 }
+
+

@@ -1,5 +1,6 @@
 package com.healthconnect.basesecurity.filter;
 
+import com.healthconnect.basesecurity.constant.SecurityConstants;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -34,8 +35,7 @@ public class JwtTokenFilter extends OncePerRequestFilter {
     private final JwtDecoder jwtDecoder;
 
     public JwtTokenFilter() {
-        String issuerUri = "http://localhost:8080/realms/healthconnect-realm";
-        this.jwtDecoder = JwtDecoders.fromIssuerLocation(issuerUri);
+        this.jwtDecoder = JwtDecoders.fromIssuerLocation(SecurityConstants.ISSUER_URI);
     }
 
     @Override
@@ -45,32 +45,32 @@ public class JwtTokenFilter extends OncePerRequestFilter {
         String requestUri = request.getRequestURI();
 
         // Bypass the filter for /api/v1/users/login
-        if ("/api/v1/users/login".equals(requestUri)) {
+        if (SecurityConstants.LOGIN_URI.equals(requestUri)) {
             chain.doFilter(request, response);
             return;
         }
 
-        logger.debug("Starting JWT filter for request: {}", requestUri);
-        String authorizationHeader = request.getHeader("Authorization");
+        logger.debug(SecurityConstants.STARTING_JWT_FILTER_LOG, requestUri);
+        String authorizationHeader = request.getHeader(SecurityConstants.AUTHORIZATION_HEADER);
 
-        if (authorizationHeader == null || !authorizationHeader.startsWith("Bearer ")) {
-            logger.warn("Authorization header is missing or does not start with 'Bearer'");
+        if (authorizationHeader == null || !authorizationHeader.startsWith(SecurityConstants.BEARER_PREFIX)) {
+            logger.warn(SecurityConstants.AUTH_HEADER_MISSING_LOG);
             chain.doFilter(request, response);
             return;
         }
 
-        String token = authorizationHeader.substring(7); // Remove "Bearer " prefix
-        logger.debug("Extracted JWT token: {}", token);
+        String token = authorizationHeader.substring(SecurityConstants.BEARER_PREFIX.length()); // Remove "Bearer " prefix
+        logger.debug(SecurityConstants.JWT_TOKEN_EXTRACTED_LOG, token);
 
         try {
             Jwt jwt = jwtDecoder.decode(token);
-            logger.debug("JWT token successfully decoded. Subject: {}", jwt.getSubject());
+            logger.debug(SecurityConstants.JWT_TOKEN_DECODED_LOG, jwt.getSubject());
 
             List<String> roles = extractRoles(jwt);
             if (roles.isEmpty()) {
-                logger.warn("No roles found in JWT. Proceeding with no roles.");
+                logger.warn(SecurityConstants.JWT_NO_ROLES_FOUND_LOG);
             } else {
-                logger.debug("Extracted roles: {}", roles);
+                logger.debug(SecurityConstants.JWT_ROLES_EXTRACTED_LOG, roles);
             }
 
             List<SimpleGrantedAuthority> authorities = roles.stream()
@@ -80,10 +80,10 @@ public class JwtTokenFilter extends OncePerRequestFilter {
             // Use Jwt as the principal directly
             JwtAuthenticationToken authentication = new JwtAuthenticationToken(jwt, authorities);
             SecurityContextHolder.getContext().setAuthentication(authentication);
-            logger.debug("JWT authentication successful for user: {} (Email: {})", jwt.getSubject(), jwt.getClaimAsString("email"));
+            logger.debug(SecurityConstants.JWT_AUTH_SUCCESS_LOG, jwt.getSubject(), jwt.getClaimAsString("email"));
 
         } catch (Exception e) {
-            logger.error("Failed to decode or authenticate JWT token", e);
+            logger.error(SecurityConstants.JWT_AUTH_FAILED_LOG, e);
             response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
             return;
         }
@@ -91,42 +91,42 @@ public class JwtTokenFilter extends OncePerRequestFilter {
         // Log the current active user
         Authentication activeUser = SecurityContextHolder.getContext().getAuthentication();
         if (activeUser != null) {
-            logger.debug("Current active user: {}", activeUser.getName());
-            logger.debug("Authorities: {}", activeUser.getAuthorities());
+            logger.debug(SecurityConstants.ACTIVE_USER_LOG, activeUser.getName());
+            logger.debug(SecurityConstants.ACTIVE_USER_AUTHORITIES_LOG, activeUser.getAuthorities());
         } else {
-            logger.warn("No active user found in the security context.");
+            logger.warn(SecurityConstants.NO_ACTIVE_USER_LOG);
         }
 
         chain.doFilter(request, response);
     }
 
     private List<String> extractRoles(Jwt jwt) {
-        Map<String, Object> realmAccess = jwt.getClaimAsMap("realm_access");
-        logger.debug("realm_access claim: {}", realmAccess);
+        Map<String, Object> realmAccess = jwt.getClaimAsMap(SecurityConstants.REALM_ACCESS);
+        logger.debug(SecurityConstants.REALM_ACCESS_LOG, realmAccess);
 
         List<String> roles = new ArrayList<>();
 
-        if (realmAccess != null && realmAccess.get("roles") instanceof List<?>) {
-            roles = ((List<?>) realmAccess.get("roles")).stream()
+        if (realmAccess != null && realmAccess.get(SecurityConstants.ROLES) instanceof List<?>) {
+            roles = ((List<?>) realmAccess.get(SecurityConstants.ROLES)).stream()
                     .filter(role -> role instanceof String)
                     .map(role -> (String) role)
-                    .map(role -> "ROLE_" + role.toUpperCase())
+                    .map(role -> SecurityConstants.ROLE_PREFIX + role.toUpperCase())
                     .collect(Collectors.toList());
         }
 
         if (roles.isEmpty()) {
-            logger.warn("No roles found in realm_access. Checking resource_access...");
-            Map<String, Object> resourceAccess = jwt.getClaimAsMap("resource_access");
+            logger.warn(SecurityConstants.NO_ROLES_REALM_ACCESS_LOG);
+            Map<String, Object> resourceAccess = jwt.getClaimAsMap(SecurityConstants.RESOURCE_ACCESS);
 
             if (resourceAccess != null) {
                 for (Object resource : resourceAccess.values()) {
                     if (resource instanceof Map<?, ?> resourceMap) {
-                        Object rolesObj = resourceMap.get("roles");
+                        Object rolesObj = resourceMap.get(SecurityConstants.ROLES);
                         if (rolesObj instanceof List<?>) {
                             List<String> resourceRoles = ((List<?>) rolesObj).stream()
                                     .filter(role -> role instanceof String)
                                     .map(role -> (String) role)
-                                    .map(role -> "ROLE_" + role.toUpperCase())
+                                    .map(role -> SecurityConstants.ROLE_PREFIX + role.toUpperCase())
                                     .toList();
                             roles.addAll(resourceRoles);
                         }
@@ -135,7 +135,7 @@ public class JwtTokenFilter extends OncePerRequestFilter {
             }
         }
 
-        logger.debug("Roles extracted from JWT: {}", roles);
+        logger.debug(SecurityConstants.ROLES_EXTRACTED_LOG, roles);
         return roles.isEmpty() ? Collections.emptyList() : roles;
     }
 }

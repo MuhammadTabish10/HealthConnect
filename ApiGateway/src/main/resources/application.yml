@@ -7,6 +7,10 @@ spring:
   application:
     name: API-GATEWAY
 
+  redis:
+    host: localhost
+    port: 6379
+
   # Security Configuration
   security:
     oauth2:
@@ -14,3 +18,8 @@ spring:
         jwt:
           issuer-uri: http://localhost:8080/realms/healthconnect-realm
           jwk-set-uri: http://localhost:8080/realms/healthconnect-realm/protocol/openid-connect/certs
+
+# Rate Limiter Configuration
+rate-limiter:
+  replenish-rate: 10
+  burst-capacity: 20
