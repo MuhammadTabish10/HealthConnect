@@ -12,7 +12,8 @@ import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
-import static com.healthconnect.userservice.constant.LogMessages.*;
+import static com.healthconnect.userservice.constant.LogMessages.PASSWORD_RESET_EMAIL_FAILED;
+import static com.healthconnect.userservice.constant.LogMessages.PASSWORD_RESET_EMAIL_SUCCESS;
 import static com.healthconnect.userservice.constant.UserConstants.ENCODING;
 
 @Service
@@ -34,7 +35,7 @@ public class EmailServiceImpl implements EmailService {
     public void sendPasswordResetEmail(String email, String firstName, String token) {
         try {
             MimeMessage mimeMessage = javaMailSender.createMimeMessage();
-            MimeMessageHelper helper = new MimeMessageHelper(mimeMessage, true, ENCODING);
+            MimeMessageHelper helper = new MimeMessageHelper(mimeMessage, ENCODING);
 
             helper.setFrom(sender);
             helper.setTo(email);
@@ -47,6 +48,4 @@ public class EmailServiceImpl implements EmailService {
             logger.error(String.format(PASSWORD_RESET_EMAIL_FAILED, email), e);
         }
     }
-
-
 }

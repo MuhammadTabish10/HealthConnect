@@ -185,7 +185,6 @@ public class UserServiceImpl extends GenericServiceImpl<User, UserDto> implement
         logger.info(PASSWORD_RESET_TOKEN_GENERATED, user.getEmail());
 
         emailService.sendPasswordResetEmail(user.getEmail(), user.getFirstName(), resetToken);
-        logger.info(PASSWORD_RESET_EMAIL_SENT, user.getEmail());
 
         return String.format(PASSWORD_RESET_EMAIL_SENT_SUCCESS, user.getEmail());
     }
