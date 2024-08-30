@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <parent>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-starter-parent</artifactId>
+        <version>3.3.2</version>
+        <relativePath/> <!-- lookup parent from repository -->
+    </parent>
+    <groupId>com.healthconnect</groupId>
+    <artifactId>hospital-service</artifactId>
+    <version>1.0.0</version>
+    <name>HospitalService</name>
+    <description>The Hospital Service is a core component of the Healthcare Connect Portal, responsible for managing and
+        providing detailed information about hospitals within various cities. This service allows users to search and
+        view hospitals based on their selected city, offering a comprehensive overview of each hospital's facilities,
+        specialties, and associated doctors. The Hospital Service integrates closely with the Location Service to
+        provide location-based filtering, ensuring users can easily find hospitals near them. It also supports the
+        storage and retrieval of geographic data, allowing hospitals to be displayed on interactive maps. Through this
+        service, users can access essential hospital details, helping them make informed decisions about their
+        healthcare needs.
+    </description>
+    <url>https://github.com/MuhammadTabish10/HealthConnect</url>
+    <licenses>
+        <license>
+            <name>Apache License, Version 2.0</name>
+            <url>http://www.apache.org/licenses/LICENSE-2.0</url>
+        </license>
+    </licenses>
+    <developers>
+        <developer>
+            <id>dev1</id>
+            <name>Muhammad Tabish Rashid</name>
+            <email>muhammadtabish05@gmail.com</email>
+        </developer>
+    </developers>
+    <properties>
+        <java.version>17</java.version>
+    </properties>
+    <dependencies>
+        <dependency>
+            <groupId>com.healthconnect</groupId>
+            <artifactId>base-service</artifactId>
+            <version>1.0.0</version>
+        </dependency>
+        <dependency>
+            <groupId>com.healthconnect</groupId>
+            <artifactId>common-models</artifactId>
+            <version>1.0.0</version>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-test</artifactId>
+            <scope>test</scope>
+        </dependency>
+    </dependencies>
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-maven-plugin</artifactId>
+            </plugin>
+        </plugins>
+    </build>
+
+</project>

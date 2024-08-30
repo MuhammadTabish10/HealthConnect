@@ -1,4 +1,4 @@
-package com.healthconnect.userservice;
+package com.healthconnect.hospitalservice;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -7,9 +7,11 @@ import org.springframework.context.annotation.ComponentScan;
 
 @SpringBootApplication
 @ComponentScan(basePackages = {"com.healthconnect"})
-@EntityScan(basePackages = "com.healthconnect.commonmodels.model.user")
-public class UserServiceApplication {
+@EntityScan(basePackages = "com.healthconnect.commonmodels.model.hospital")
+public class HospitalServiceApplication {
+
 	public static void main(String[] args) {
-		SpringApplication.run(UserServiceApplication.class, args);
+		SpringApplication.run(HospitalServiceApplication.class, args);
 	}
+
 }

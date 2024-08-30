@@ -1,0 +1,10 @@
+package com.healthconnect.hospitalservice.constant;
+
+import lombok.AccessLevel;
+import lombok.NoArgsConstructor;
+
+@NoArgsConstructor(access = AccessLevel.PRIVATE)
+public class ApiEndpoints {
+    public static final String BASE_API = "/api/v1";
+    public static final String HOSPITALS = BASE_API + "/hospitals";
+}

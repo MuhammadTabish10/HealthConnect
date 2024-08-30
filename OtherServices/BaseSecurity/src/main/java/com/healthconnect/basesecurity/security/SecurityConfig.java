@@ -90,8 +90,9 @@ public class SecurityConfig {
                         authorizeRequests
                                 .requestMatchers("/api/v1/users/login").permitAll()
                                 .requestMatchers("/api/v1/users/**", "/api/v1/keycloak/users").hasRole(ROLE_ADMIN)
-                                .anyRequest().authenticated()
-                )
+                                .requestMatchers("/api/v1/locations/**").hasRole(ROLE_ADMIN)
+                                .requestMatchers("/api/v1/hospitals/**").hasRole(ROLE_ADMIN)
+                                .anyRequest().authenticated())
                 .addFilterBefore(jwtTokenFilter, UsernamePasswordAuthenticationFilter.class);
 
         return http.build();

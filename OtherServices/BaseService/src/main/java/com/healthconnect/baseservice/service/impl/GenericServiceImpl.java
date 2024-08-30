@@ -70,7 +70,7 @@ public class GenericServiceImpl<T, U> implements GenericService<U> {
                     return mappingUtils.mapToDto(entity, dtoClass);
                 })
                 .orElseThrow(() -> {
-                    logger.error(LogMessages.ENTITY_FETCH_ERROR, dtoClass.getSimpleName(), id);
+                    logger.error(String.format(LogMessages.ENTITY_FETCH_ERROR, dtoClass.getSimpleName(), id));
                     return new EntityNotFoundException(String.format(ErrorMessages.ENTITY_NOT_FOUND_AT_ID, entityClass.getSimpleName(), id));
                 });
     }

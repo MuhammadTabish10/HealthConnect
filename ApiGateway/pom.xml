@@ -18,24 +18,24 @@
         from clients, simplifying interactions and enhancing security and scalability. Popular implementations include
         Spring Cloud Gateway.
     </description>
-	<url>https://github.com/MuhammadTabish10/HealthConnect</url>
-	<licenses>
-		<license>
-			<name>Apache License, Version 2.0</name>
-			<url>http://www.apache.org/licenses/LICENSE-2.0</url>
-		</license>
-	</licenses>
-	<developers>
-		<developer>
-			<id>dev1</id>
-			<name>Muhammad Tabish Rashid</name>
-			<email>muhammadtabish05@gmail.com</email>
-		</developer>
-	</developers>
-	<properties>
-		<java.version>17</java.version>
-		<spring-cloud.version>2023.0.3</spring-cloud.version>
-	</properties>
+    <url>https://github.com/MuhammadTabish10/HealthConnect</url>
+    <licenses>
+        <license>
+            <name>Apache License, Version 2.0</name>
+            <url>http://www.apache.org/licenses/LICENSE-2.0</url>
+        </license>
+    </licenses>
+    <developers>
+        <developer>
+            <id>dev1</id>
+            <name>Muhammad Tabish Rashid</name>
+            <email>muhammadtabish05@gmail.com</email>
+        </developer>
+    </developers>
+    <properties>
+        <java.version>17</java.version>
+        <spring-cloud.version>2023.0.3</spring-cloud.version>
+    </properties>
     <dependencies>
         <dependency>
             <groupId>com.healthconnect</groupId>
@@ -46,6 +46,10 @@
                     <groupId>org.springframework.boot</groupId>
                     <artifactId>spring-boot-starter-web</artifactId>
                 </exclusion>
+<!--                <exclusion>-->
+<!--                    <groupId>org.keycloak</groupId>-->
+<!--                    <artifactId>keycloak-admin-client</artifactId>-->
+<!--                </exclusion>-->
                 <exclusion>
                     <groupId>org.springframework.boot</groupId>
                     <artifactId>spring-boot-starter-data-jpa</artifactId>
@@ -56,17 +60,21 @@
                 </exclusion>
             </exclusions>
         </dependency>
-        <dependency>
-            <groupId>com.healthconnect</groupId>
-            <artifactId>common-models</artifactId>
-            <version>1.0.0</version>
-            <exclusions>
-                <exclusion>
-                    <groupId>org.springframework.boot</groupId>
-                    <artifactId>spring-boot-starter-data-jpa</artifactId>
-                </exclusion>
-            </exclusions>
-        </dependency>
+<!--        <dependency>-->
+<!--            <groupId>com.healthconnect</groupId>-->
+<!--            <artifactId>common-models</artifactId>-->
+<!--            <version>1.0.0</version>-->
+<!--            <exclusions>-->
+<!--                <exclusion>-->
+<!--                    <groupId>org.springframework.boot</groupId>-->
+<!--                    <artifactId>spring-boot-starter-data-jpa</artifactId>-->
+<!--                </exclusion>-->
+<!--                <exclusion>-->
+<!--                    <groupId>com.healthconnect</groupId>-->
+<!--                    <artifactId>base-security</artifactId>-->
+<!--                </exclusion>-->
+<!--            </exclusions>-->
+<!--        </dependency>-->
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-webflux</artifactId>

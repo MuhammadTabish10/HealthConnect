@@ -1,7 +1,7 @@
-package com.healthconnect.commonmodels.repository;
+package com.healthconnect.userservice.repository;
 
-import com.healthconnect.commonmodels.model.User;
-import org.springframework.data.jpa.repository.JpaRepository;
+import com.healthconnect.baseservice.repository.GenericRepository;
+import com.healthconnect.commonmodels.model.user.User;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -10,7 +10,7 @@ import org.springframework.stereotype.Repository;
 import java.util.Optional;
 
 @Repository
-public interface UserRepository extends JpaRepository<User, Long> {
+public interface UserRepository extends GenericRepository<User, Long> {
     Optional<User> findByEmailAndIsActiveIsTrue(String email);
     Optional<User> findByResetToken(String token);
 

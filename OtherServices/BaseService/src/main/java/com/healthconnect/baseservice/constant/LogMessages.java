@@ -34,7 +34,7 @@ public class LogMessages {
     public static final String ENTITY_DELETE_START = "Deleting entity of type {} with ID: {}";
 
     public static final String ENTITY_SAVE_ERROR = "Failed to save entity of type {}: {}";
-    public static final String ENTITY_FETCH_ERROR = "Entity of type {} with ID: {} not found";
+    public static final String ENTITY_FETCH_ERROR = "Entity of type %s with ID: %d not found";
     public static final String ENTITY_FETCH_ALL_ERROR = "Failed to retrieve entities of type {}: {}";
     public static final String ENTITY_UPDATE_ERROR = "Failed to update entity of type {} with ID: {}: {}";
     public static final String ENTITY_DELETE_ERROR = "Failed to delete entity of type {} with ID: {}: {}";

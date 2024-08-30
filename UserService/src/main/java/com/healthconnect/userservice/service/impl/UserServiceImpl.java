@@ -3,14 +3,14 @@ package com.healthconnect.userservice.service.impl;
 import com.healthconnect.baseservice.constant.ErrorMessages;
 import com.healthconnect.baseservice.constant.LogMessages;
 import com.healthconnect.baseservice.exception.*;
+import com.healthconnect.baseservice.repository.GenericRepository;
 import com.healthconnect.baseservice.service.impl.GenericServiceImpl;
 import com.healthconnect.baseservice.util.MappingUtils;
 import com.healthconnect.commonmodels.dto.UserDto;
-import com.healthconnect.commonmodels.model.User;
-import com.healthconnect.commonmodels.repository.UserRepository;
+import com.healthconnect.commonmodels.model.user.User;
 import com.healthconnect.userservice.dto.LoginCredentials;
 import com.healthconnect.userservice.dto.TokenResponse;
-import com.healthconnect.userservice.repository.UserDataRepository;
+import com.healthconnect.userservice.repository.UserRepository;
 import com.healthconnect.userservice.service.EmailService;
 import com.healthconnect.userservice.service.KeycloakAdminService;
 import com.healthconnect.userservice.service.UserService;
@@ -34,7 +34,6 @@ import org.springframework.web.client.RestTemplate;
 import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.Optional;
-import java.util.UUID;
 
 import static com.healthconnect.userservice.constant.LogMessages.*;
 import static com.healthconnect.userservice.util.UserUtils.extractUserIdFromResponse;
@@ -60,10 +59,10 @@ public class UserServiceImpl extends GenericServiceImpl<User, UserDto> implement
     private final EmailService emailService;
     private final RestTemplate restTemplate;
 
-    public UserServiceImpl(UserDataRepository userDataRepository, MappingUtils mappingUtils,
+    public UserServiceImpl(GenericRepository<User, Long> repository, MappingUtils mappingUtils,
                            UserRepository userRepository, KeycloakAdminService keycloakAdminService,
                            UserUtils userUtils, EmailService emailService, RestTemplate restTemplate) {
-        super(userDataRepository, mappingUtils, User.class, UserDto.class);
+        super(repository, mappingUtils, User.class, UserDto.class);
         this.userRepository = userRepository;
         this.keycloakAdminService = keycloakAdminService;
         this.userUtils = userUtils;

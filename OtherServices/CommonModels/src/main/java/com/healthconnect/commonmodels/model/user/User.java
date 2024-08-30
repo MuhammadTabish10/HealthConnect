@@ -1,6 +1,7 @@
-package com.healthconnect.commonmodels.model;
+package com.healthconnect.commonmodels.model.user;
 
 import com.healthconnect.commonmodels.enums.Gender;
+import com.healthconnect.commonmodels.model.Auditable;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;

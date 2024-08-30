@@ -32,8 +32,11 @@ public class GatewayConfig {
     private static final String REDIS_CONNECTION_TEST_KEY = "connection_test_key";
     private static final String REDIS_CONNECTION_TEST_VALUE = "connection_test_value";
 
-    @Autowired
-    private ReactiveStringRedisTemplate redisTemplate;
+    private final ReactiveStringRedisTemplate redisTemplate;
+
+    public GatewayConfig(ReactiveStringRedisTemplate redisTemplate) {
+        this.redisTemplate = redisTemplate;
+    }
 
     @Bean
     public RouteLocator gatewayRoutes(RouteLocatorBuilder builder) {
@@ -44,6 +47,16 @@ public class GatewayConfig {
                                 .setRateLimiter(redisRateLimiter())
                                 .setKeyResolver(ipKeyResolver())))
                         .uri(RouteConstants.USER_SERVICE_URI))
+                .route(RouteConstants.LOCATION_SERVICE_ID, r -> r.path(RouteConstants.LOCATION_SERVICE_PATH)
+                        .filters(f -> f.requestRateLimiter(config -> config
+                                .setRateLimiter(redisRateLimiter())
+                                .setKeyResolver(ipKeyResolver())))
+                        .uri(RouteConstants.LOCATION_SERVICE_URI))
+                .route(RouteConstants.HOSPITAL_SERVICE_ID, r -> r.path(RouteConstants.HOSPITAL_SERVICE_PATH)
+                        .filters(f -> f.requestRateLimiter(config -> config
+                                .setRateLimiter(redisRateLimiter())
+                                .setKeyResolver(ipKeyResolver())))
+                        .uri(RouteConstants.HOSPITAL_SERVICE_URI))
                 .build();
     }
 
