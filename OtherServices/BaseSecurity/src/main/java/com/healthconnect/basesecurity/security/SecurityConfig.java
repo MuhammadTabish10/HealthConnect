@@ -92,6 +92,7 @@ public class SecurityConfig {
                                 .requestMatchers("/api/v1/users/**", "/api/v1/keycloak/users").hasRole(ROLE_ADMIN)
                                 .requestMatchers("/api/v1/locations/**").hasRole(ROLE_ADMIN)
                                 .requestMatchers("/api/v1/hospitals/**").hasRole(ROLE_ADMIN)
+                                .requestMatchers("/api/v1/cities/**").hasRole(ROLE_ADMIN)
                                 .anyRequest().authenticated())
                 .addFilterBefore(jwtTokenFilter, UsernamePasswordAuthenticationFilter.class);
 

@@ -85,7 +85,10 @@ public class GenericServiceImpl<T, U> implements GenericService<U> {
                         logger.error(LogMessages.ENTITY_FETCH_ERROR, dtoClass.getSimpleName(), id);
                         return new EntityNotFoundException(String.format(ErrorMessages.ENTITY_NOT_FOUND_AT_ID, entityClass.getSimpleName(), id));
                     });
+
+            mappingUtils.mapNonNullFields(dto, existingEntity);
             T updatedEntity = repository.save(existingEntity);
+
             logger.info(LogMessages.ENTITY_UPDATE_SUCCESS, dtoClass.getSimpleName(), id);
             return mappingUtils.mapToDto(updatedEntity, dtoClass);
         } catch (Exception e) {
@@ -93,6 +96,8 @@ public class GenericServiceImpl<T, U> implements GenericService<U> {
             throw new EntityUpdateException(String.format(ErrorMessages.ENTITY_UPDATE_FAILED, dtoClass.getSimpleName(), id), e);
         }
     }
+
+
 
     @Override
     @Transactional

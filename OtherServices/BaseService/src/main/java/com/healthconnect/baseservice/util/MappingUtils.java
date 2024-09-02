@@ -37,4 +37,10 @@ public class MappingUtils {
                 .map(dto -> mapToEntity(dto, entityClass))
                 .collect(Collectors.toList());
     }
+
+    public <D, T> void mapNonNullFields(final D source, final T destination) {
+        modelMapper.getConfiguration().setPropertyCondition(context -> context.getSource() != null);
+        modelMapper.map(source, destination);
+    }
+
 }
