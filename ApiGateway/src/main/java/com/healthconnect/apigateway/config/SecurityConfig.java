@@ -47,7 +47,8 @@ public class SecurityConfig {
                 })
                 .oauth2ResourceServer(oAuth2ResourceServerSpec -> {
                     logger.info(CONFIGURING_OAUTH2_SERVER);
-                    oAuth2ResourceServerSpec.jwt(Customizer.withDefaults())
+                    oAuth2ResourceServerSpec
+                            .jwt(Customizer.withDefaults())
                             .authenticationEntryPoint(customAuthenticationEntryPoint);
                 });
 

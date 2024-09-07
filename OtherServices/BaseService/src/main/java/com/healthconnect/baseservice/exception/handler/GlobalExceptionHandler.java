@@ -1,12 +1,15 @@
 package com.healthconnect.baseservice.exception.handler;
 
 import com.healthconnect.baseservice.constant.ErrorMessages;
-import com.healthconnect.baseservice.exception.*;
 import com.healthconnect.baseservice.dto.ExceptionMessage;
+import com.healthconnect.baseservice.exception.*;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
+
+import java.util.Objects;
 
 import static com.healthconnect.baseservice.util.ExceptionUtils.buildResponseEntity;
 
@@ -66,6 +69,11 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(PasswordDoNotMatchException.class)
     public ResponseEntity<ExceptionMessage<String>> handlePasswordDoNotMatchException(PasswordDoNotMatchException ex) {
         return buildResponseEntity(ex.getMessage(), HttpStatus.BAD_REQUEST);
+    }
+
+    @ExceptionHandler(MethodArgumentNotValidException.class)
+    public ResponseEntity<ExceptionMessage<String>> handleValidationExceptions(MethodArgumentNotValidException ex) {
+        return buildResponseEntity(Objects.requireNonNull(ex.getBindingResult().getFieldError()).getDefaultMessage(), HttpStatus.BAD_REQUEST);
     }
 
     @ExceptionHandler(Exception.class)

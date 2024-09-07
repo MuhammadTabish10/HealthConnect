@@ -1,6 +1,7 @@
 package com.healthconnect.baseservice.controller;
 
 import com.healthconnect.baseservice.service.GenericService;
+import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -19,7 +20,7 @@ public abstract class GenericController<U> {
     }
 
     @PostMapping
-    public ResponseEntity<U> create(@RequestBody U dto) {
+    public ResponseEntity<U> create(@RequestBody @Valid U dto) {
         U createdDto = genericService.save(dto);
         return new ResponseEntity<>(createdDto, HttpStatus.CREATED);
     }
@@ -37,7 +38,7 @@ public abstract class GenericController<U> {
     }
 
     @PutMapping(ID)
-    public ResponseEntity<U> update(@PathVariable Long id, @RequestBody U dto) {
+    public ResponseEntity<U> update(@PathVariable Long id, @RequestBody @Valid U dto) {
         U updatedDto = genericService.update(dto, id);
         return new ResponseEntity<>(updatedDto, HttpStatus.OK);
     }

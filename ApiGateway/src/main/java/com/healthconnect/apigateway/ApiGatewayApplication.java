@@ -7,7 +7,7 @@ import org.springframework.context.annotation.FilterType;
 
 @SpringBootApplication
 @ComponentScan(
-        excludeFilters = @ComponentScan.Filter(type = FilterType.REGEX, pattern = "com\\.healthconnect\\.baseservice\\.filter\\..*")
+        excludeFilters = @ComponentScan.Filter(type = FilterType.REGEX, pattern = "com\\.healthconnect\\.baseservice\\.filter\\..*") // Exclude filters only
 )
 public class ApiGatewayApplication {
     public static void main(String[] args) {
