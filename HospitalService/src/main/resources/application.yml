@@ -21,18 +21,18 @@ spring:
     ddl-auto: update
     generate-ddl: true
 
-# Swagger Configuration
-swagger:
-  base-package: com.healthconnect.hospitalservice
-  title: Hospital Service API Documentation
-  description: API documentation for the Hospital Management service of Healthcare Connect.
-  version: v1
+app:
+  keycloak:
+    auth-server-url: http://localhost:8080
+    realm: healthconnect-realm
+    resource: healthconnect-client
+    credentials:
+      secret: CDVXONhkCSSlcm8dpfQ64JVaw5HtggS8
+      username: muhammadtabish05@gmail.com
+      password: 123
 
-keycloak:
-  auth-server-url: http://localhost:8080
-  realm: healthconnect-realm
-  resource: healthconnect-client
-  credentials:
-    secret: CDVXONhkCSSlcm8dpfQ64JVaw5HtggS8
-    username: muhammadtabish05@gmail.com
-    password: 123
+  swagger:
+    base-package: com.healthconnect.hospitalservice
+    title: Hospital Service API Documentation
+    description: API documentation for the Hospital Management service of Healthcare Connect.
+    version: v1
