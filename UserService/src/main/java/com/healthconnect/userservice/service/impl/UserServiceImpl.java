@@ -49,7 +49,7 @@ public class UserServiceImpl extends GenericServiceImpl<User, UserDto> implement
     @Value("${app.logout-url}")
     private String logoutUrl;
 
-    @Value("${keycloak.realm}")
+    @Value("${app.keycloak.realm}")
     private String realm;
 
     private final UserRepository userRepository;

@@ -12,7 +12,6 @@ import java.time.LocalDateTime;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-@Builder
 public class UserDto {
     private Long id;
     private LocalDateTime createdAt;

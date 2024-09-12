@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <parent>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-starter-parent</artifactId>
+        <version>3.3.2</version>
+        <relativePath/> <!-- lookup parent from repository -->
+    </parent>
+    <groupId>com.healthconnect</groupId>
+    <artifactId>doctor-service</artifactId>
+    <version>1.0.0</version>
+    <name>DoctorService</name>
+    <description>The Doctor Service is a crucial component within the healthcare management system, designed to manage
+        and orchestrate all operations related to doctors. It handles the profile management of doctors, including their
+        specialties, availability, and affiliations with multiple hospitals. The service facilitates efficient
+        scheduling, consultation management, and availability tracking, ensuring that patients can easily find and book
+        appointments with the right doctors. Additionally, it supports integration with other healthcare services,
+        maintaining the integrity and accessibility of doctor-related data across the platform.
+    </description>
+    <url>https://github.com/MuhammadTabish10/HealthConnect</url>
+    <licenses>
+        <license>
+            <name>Apache License, Version 2.0</name>
+            <url>http://www.apache.org/licenses/LICENSE-2.0</url>
+        </license>
+    </licenses>
+    <developers>
+        <developer>
+            <id>dev1</id>
+            <name>Muhammad Tabish Rashid</name>
+            <email>muhammadtabish05@gmail.com</email>
+        </developer>
+    </developers>
+    <properties>
+        <java.version>17</java.version>
+    </properties>
+    <dependencies>
+        <dependency>
+            <groupId>com.healthconnect</groupId>
+            <artifactId>base-service</artifactId>
+            <version>1.0.0</version>
+        </dependency>
+        <dependency>
+            <groupId>com.healthconnect</groupId>
+            <artifactId>common-models</artifactId>
+            <version>1.0.0</version>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.cloud</groupId>
+            <artifactId>spring-cloud-starter-openfeign</artifactId>
+            <version>4.1.3</version>
+            <exclusions>
+                <exclusion>
+                    <groupId>commons-fileupload</groupId>
+                    <artifactId>commons-fileupload</artifactId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-test</artifactId>
+            <scope>test</scope>
+        </dependency>
+    </dependencies>
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-maven-plugin</artifactId>
+            </plugin>
+        </plugins>
+    </build>
+
+</project>

@@ -42,7 +42,7 @@ public class SecurityConfig {
                 .csrf(ServerHttpSecurity.CsrfSpec::disable)
                 .authorizeExchange(exchange -> {
                     logger.info(CONFIGURING_AUTHORIZATION_EXCHANGE);
-                    exchange.pathMatchers(LOGIN_PATH).permitAll();
+                    exchange.pathMatchers(LOGIN_PATH,"/actuator/**").permitAll();
                     exchange.anyExchange().authenticated();
                 })
                 .oauth2ResourceServer(oAuth2ResourceServerSpec -> {

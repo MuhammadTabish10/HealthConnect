@@ -11,7 +11,7 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 @NoArgsConstructor
 @AllArgsConstructor
-@ConfigurationProperties(prefix = "swagger")
+@ConfigurationProperties(prefix = "app.swagger")
 public class SwaggerProperties {
     private String basePackage;
     private String title;

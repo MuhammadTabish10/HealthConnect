@@ -6,6 +6,7 @@ import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.FilterType;
 
 @SpringBootApplication
+@ComponentScan(basePackages = {"com.healthconnect.apigateway", "com.healthconnect.cachingservice"})
 @ComponentScan(
         excludeFilters = @ComponentScan.Filter(type = FilterType.REGEX, pattern = "com\\.healthconnect\\.baseservice\\.filter\\..*") // Exclude filters only
 )

@@ -1,18 +1,17 @@
 package com.healthconnect.commonmodels.model.hospital;
 
+import com.healthconnect.commonmodels.model.Auditable;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
+@EqualsAndHashCode(callSuper = true)
 @Entity
 @Table(name = "hospital")
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class Hospital {
+public class Hospital extends Auditable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;

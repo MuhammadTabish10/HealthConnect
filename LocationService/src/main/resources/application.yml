@@ -1,0 +1,29 @@
+# Server Configuration
+server:
+  port: 9092
+
+# Application Configuration
+spring:
+  application:
+    name: LOCATION-SERVICE
+
+  # DataSource Configuration
+  datasource:
+    url: jdbc:mysql://localhost:3306/location_service?createDatabaseIfNotExist=true
+    username: root
+    password: root
+    driver-class-name: com.mysql.cj.jdbc.Driver
+
+  # JPA Configuration
+  jpa:
+    hibernate:
+      use-new-id-generator-mappings: false
+    ddl-auto: update
+    generate-ddl: true
+
+# Swagger Configuration
+swagger:
+  base-package: com.healthconnect.locationservice
+  title: Location Service API Documentation
+  description: API documentation for the Location Management service of Healthcare Connect.
+  version: v1

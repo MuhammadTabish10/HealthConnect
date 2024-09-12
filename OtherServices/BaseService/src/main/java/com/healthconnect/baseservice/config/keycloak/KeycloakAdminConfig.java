@@ -10,22 +10,22 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 public class KeycloakAdminConfig {
 
-    @Value("${keycloak.auth-server-url}")
+    @Value("${app.keycloak.auth-server-url}")
     private String authServerUrl;
 
-    @Value("${keycloak.realm}")
+    @Value("${app.keycloak.realm}")
     private String realm;
 
-    @Value("${keycloak.resource}")
+    @Value("${app.keycloak.resource}")
     private String clientId;
 
-    @Value("${keycloak.credentials.secret}")
+    @Value("${app.keycloak.credentials.secret}")
     private String clientSecret;
 
-    @Value("${keycloak.credentials.username}")
+    @Value("${app.keycloak.credentials.username}")
     private String adminUsername;
 
-    @Value("${keycloak.credentials.password}")
+    @Value("${app.keycloak.credentials.password}")
     private String adminPassword;
 
     @Bean

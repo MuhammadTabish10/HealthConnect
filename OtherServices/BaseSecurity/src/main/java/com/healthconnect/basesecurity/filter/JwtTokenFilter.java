@@ -34,6 +34,7 @@ public class JwtTokenFilter extends OncePerRequestFilter {
 
     private final JwtDecoder jwtDecoder;
 
+
     public JwtTokenFilter() {
         this.jwtDecoder = JwtDecoders.fromIssuerLocation(SecurityConstants.ISSUER_URI);
     }
@@ -44,7 +45,6 @@ public class JwtTokenFilter extends OncePerRequestFilter {
 
         String requestUri = request.getRequestURI();
 
-        // Bypass the filter for /api/v1/users/login
         if (SecurityConstants.LOGIN_URI.equals(requestUri)) {
             chain.doFilter(request, response);
             return;

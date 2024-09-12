@@ -23,3 +23,15 @@ spring:
 rate-limiter:
   replenish-rate: 10
   burst-capacity: 20
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"
+  metrics:
+    cache:
+      instrument: true
+    enable:
+      caffeine: true
+      redis: true

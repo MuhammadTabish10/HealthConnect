@@ -20,7 +20,7 @@ import static com.healthconnect.userservice.util.UserUtils.extractUserIdFromResp
 @Service
 public class KeycloakAdminServiceImpl implements KeycloakAdminService {
 
-    @Value("${keycloak.realm}")
+    @Value("${app.keycloak.realm}")
     private String realm;
 
     private final Keycloak keycloak;

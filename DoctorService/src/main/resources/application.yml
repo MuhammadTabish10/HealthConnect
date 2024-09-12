@@ -1,0 +1,38 @@
+# Server Configuration
+server:
+  port: 9094
+
+# Application Configuration
+spring:
+  application:
+    name: DOCTOR-SERVICE
+
+  # DataSource Configuration
+  datasource:
+    url: jdbc:mysql://localhost:3306/doctor_service?createDatabaseIfNotExist=true
+    username: root
+    password: root
+    driver-class-name: com.mysql.cj.jdbc.Driver
+
+  # JPA Configuration
+  jpa:
+    hibernate:
+      use-new-id-generator-mappings: false
+    ddl-auto: update
+    generate-ddl: true
+
+# Swagger Configuration
+swagger:
+  base-package: com.healthconnect.doctorservice
+  title: Doctor Service API Documentation
+  description: API documentation for the Doctor Management service of Healthcare Connect.
+  version: v1
+
+keycloak:
+  auth-server-url: http://localhost:8080
+  realm: healthconnect-realm
+  resource: healthconnect-client
+  credentials:
+    secret: CDVXONhkCSSlcm8dpfQ64JVaw5HtggS8
+    username: muhammadtabish05@gmail.com
+    password: 123

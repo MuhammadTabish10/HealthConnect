@@ -41,14 +41,6 @@ spring:
     ddl-auto: update
     generate-ddl: true
 
-# Swagger Configuration
-swagger:
-  base-package: com.healthconnect.userservice
-  title: User Service API Documentation
-  description: API documentation for the User Management service of Healthcare Connect.
-  version: v1
-
-# Management Configuration for Actuator Endpoints
 management:
   endpoints:
     web:
@@ -61,16 +53,21 @@ management:
       export:
         enabled: true
 
-# User Service Configuration
 app:
-  token-url: "http://localhost:8080/realms/healthconnect-realm/protocol/openid-connect/token"
-  logout-url: "http://localhost:8080/realms/healthconnect-realm/protocol/openid-connect/logout"
+  token-url: http://localhost:8080/realms/healthconnect-realm/protocol/openid-connect/token
+  logout-url: http://localhost:8080/realms/healthconnect-realm/protocol/openid-connect/logout
 
-keycloak:
-  auth-server-url: http://localhost:8080
-  realm: healthconnect-realm
-  resource: healthconnect-client
-  credentials:
-    secret: CDVXONhkCSSlcm8dpfQ64JVaw5HtggS8
-    username: muhammadtabish05@gmail.com
-    password: 123
+  keycloak:
+    auth-server-url: http://localhost:8080
+    realm: healthconnect-realm
+    resource: healthconnect-client
+    credentials:
+      secret: CDVXONhkCSSlcm8dpfQ64JVaw5HtggS8
+      username: muhammadtabish05@gmail.com
+      password: 123
+
+  swagger:
+    base-package: com.healthconnect.userservice
+    title: User Service API Documentation
+    description: API documentation for the User Management service of Healthcare Connect.
+    version: v1

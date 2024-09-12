@@ -30,13 +30,13 @@ import static com.healthconnect.userservice.constant.UserConstants.*;
 @Component
 public class UserUtils {
 
-    @Value("${keycloak.resource}")
+    @Value("${app.keycloak.resource}")
     private String clientId;
 
-    @Value("${keycloak.credentials.secret}")
+    @Value("${app.keycloak.credentials.secret}")
     private String clientSecret;
 
-    @Value("${keycloak.realm}")
+    @Value("${app.keycloak.realm}")
     private String realm;
 
     private final ObjectMapper objectMapper;

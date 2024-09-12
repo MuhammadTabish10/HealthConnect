@@ -10,6 +10,7 @@ public class SecurityConstants {
 
     // Role
     public static final String ROLE_PREFIX = "ROLE_";
+    public static final String ROLE_ADMIN = "ADMIN";
 
     // Log messages
     public static final String STARTING_JWT_FILTER_LOG = "Starting JWT filter for request: {}";
@@ -31,7 +32,11 @@ public class SecurityConstants {
     public static final String REALM_ACCESS = "realm_access";
     public static final String ROLES = "roles";
     public static final String RESOURCE_ACCESS = "resource_access";
-
+    public static final String TOKEN_NOT_FOUND_LOG = "Token not found in redis.";
+    public static final String ROLES_DESERIALIZE_ERROR_LOG = "Error Deserializing roles.";
+    public static final String TOKEN_DATA_FOUND_REDIS_LOG = "Token Data found in Redis.";
+    public static final String REDIS_ACCESS_FAILED_LOG = "Failed to access redis.";
+    public static final String JWT_TOKEN_SAME_LOG = "Jwt Token Matches.";
 
 
     private SecurityConstants() {
