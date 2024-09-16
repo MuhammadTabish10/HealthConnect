@@ -33,6 +33,7 @@ public class Doctor extends Auditable {
     private String bio;
 
     private Long userId;
+    private Boolean isActive;
 
     @ElementCollection
     @CollectionTable(name = "doctor_hospitals", joinColumns = @JoinColumn(name = "doctor_id"))
@@ -42,4 +43,11 @@ public class Doctor extends Auditable {
     @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
     @JoinColumn(name = "doctor_id")
     private List<DoctorAvailability> availabilities;
+
+    @PrePersist
+    protected void onCreate() {
+        if (this.isActive == null) {
+            this.isActive = true;
+        }
+    }
 }

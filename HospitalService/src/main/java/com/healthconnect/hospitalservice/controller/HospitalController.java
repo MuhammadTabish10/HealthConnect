@@ -7,22 +7,25 @@ import com.healthconnect.hospitalservice.Service.HospitalService;
 import com.healthconnect.hospitalservice.constant.ApiEndpoints;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RestController
 @RequestMapping(ApiEndpoints.HOSPITALS)
-public class HospitalController extends GenericController<HospitalDto> {
+public class HospitalController extends GenericController<HospitalDto>{
 
     private final HospitalService hospitalService;
 
     public HospitalController(GenericService<HospitalDto> genericService, HospitalService hospitalService) {
         super(genericService);
         this.hospitalService = hospitalService;
+    }
+
+    @GetMapping(ApiEndpoints.HOSPITALS_BY_IDS)
+    public ResponseEntity<List<HospitalDto>> getAllHospitalsByIds(@PathVariable(name = "hospital-ids") List<Long> ids) {
+        List<HospitalDto> hospitals = hospitalService.findAllByIds(ids);
+        return new ResponseEntity<>(hospitals, HttpStatus.OK);
     }
 
     @GetMapping(ApiEndpoints.CITY)

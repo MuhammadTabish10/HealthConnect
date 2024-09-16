@@ -28,4 +28,9 @@ public class DoctorAvailabilityDto {
 
     @NotNull(message = "End time cannot be null")
     private LocalTime endTime;
+
+    @NotNull(message = "Hospital cannot be null")
+    private HospitalDto hospital;
+
+    private Boolean isActive;
 }

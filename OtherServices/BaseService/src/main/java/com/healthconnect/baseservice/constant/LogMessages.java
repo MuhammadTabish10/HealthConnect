@@ -41,4 +41,8 @@ public class LogMessages {
     public static final String ENTITY_FETCH_ALL_ERROR = "Failed to retrieve entities of type {}: {}";
     public static final String ENTITY_UPDATE_ERROR = "Failed to update entity of type {} with ID: {}: {}";
     public static final String ENTITY_DELETE_ERROR = "Failed to delete entity of type {} with ID: {}: {}";
+    public static final String ENTITY_FETCHING_BY_IDS = "{}: Fetching {} entities by {} IDs";
+    public static final String ENTITY_NO_ENTITIES_FOUND_BY_IDS = "{}: No entities found for the provided IDs";
+    public static final String ALL_ENTITY_FETCH_SUCCESS = "{}: Successfully fetched {} entities";
+
 }

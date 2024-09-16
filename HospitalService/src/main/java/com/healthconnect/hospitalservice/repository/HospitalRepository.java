@@ -11,4 +11,5 @@ import java.util.Optional;
 public interface HospitalRepository extends GenericRepository<Hospital, Long> {
     Optional<List<Hospital>> findByCityNameAndIsActiveTrue(String cityName);
     Optional<Hospital> findByLocationLatitudeAndLocationLongitude(Double latitude, Double longitude);
+    List<Hospital> findByIdIn(List<Long> ids);
 }

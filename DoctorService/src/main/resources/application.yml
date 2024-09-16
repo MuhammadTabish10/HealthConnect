@@ -21,18 +21,26 @@ spring:
     ddl-auto: update
     generate-ddl: true
 
-# Swagger Configuration
-swagger:
-  base-package: com.healthconnect.doctorservice
-  title: Doctor Service API Documentation
-  description: API documentation for the Doctor Management service of Healthcare Connect.
-  version: v1
 
-keycloak:
-  auth-server-url: http://localhost:8080
-  realm: healthconnect-realm
-  resource: healthconnect-client
-  credentials:
-    secret: CDVXONhkCSSlcm8dpfQ64JVaw5HtggS8
-    username: muhammadtabish05@gmail.com
-    password: 123
+app:
+  keycloak:
+    auth-server-url: http://localhost:8080
+    realm: healthconnect-realm
+    resource: healthconnect-client
+    credentials:
+      secret: CDVXONhkCSSlcm8dpfQ64JVaw5HtggS8
+      username: muhammadtabish05@gmail.com
+      password: 123
+
+  swagger:
+    base-package: com.healthconnect.doctorservice
+    title: Doctor Service API Documentation
+    description: API documentation for the Doctor Management service of Healthcare Connect.
+    version: v1
+
+
+feign-client:
+  services:
+    urls:
+      hospital: http://localhost:9093/api/v1/hospitals
+      user: http://localhost:9091/api/v1/users

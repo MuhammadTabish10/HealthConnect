@@ -2,16 +2,20 @@ package com.healthconnect.commonmodels.dto;
 
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.*;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.util.List;
 
-@EqualsAndHashCode(callSuper = true)
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class DoctorDto extends UserDto {
+public class DoctorDto {
+
+    private Long id;
 
     @NotBlank(message = "License number cannot be blank")
     @Size(min = 5, max = 20, message = "License number must be between 5 and 20 characters")
@@ -38,9 +42,13 @@ public class DoctorDto extends UserDto {
     @Size(max = 2000, message = "Bio must not exceed 2000 characters")
     private String bio;
 
+    @NotNull(message = "UserID cannot be null")
+    private UserDto user;
+
     @NotEmpty(message = "Hospital IDs list cannot be empty")
-    private List<Long> hospitalIds;
+    private List<HospitalDto> hospitals;
 
     @NotEmpty(message = "Availabilities list cannot be empty")
     private List<@Valid DoctorAvailabilityDto> availabilities;
+    private Boolean isActive;
 }

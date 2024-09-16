@@ -18,6 +18,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
+import java.util.Collections;
 import java.util.List;
 
 import static com.healthconnect.baseservice.constant.ErrorMessages.ENTITY_NOT_FOUND_AT_ID;
@@ -73,6 +74,26 @@ public class HospitalServiceImpl extends GenericServiceImpl<Hospital, HospitalDt
                     return new EntityNotFoundException(String.format(ErrorMessages.ENTITY_NOT_FOUND_BY_NAME, Hospital.class.getSimpleName(), cityName));
                 });
     }
+
+    @Override
+    public List<HospitalDto> findAllByIds(List<Long> ids) {
+        if (ids == null || ids.isEmpty()) {
+            return Collections.emptyList();
+        }
+
+        logger.info(LogMessages.ENTITY_FETCHING_BY_IDS, HospitalDto.class.getSimpleName(), ids.size());
+
+        List<Hospital> hospitals = hospitalRepository.findByIdIn(ids);
+        if (hospitals.isEmpty()) {
+            logger.warn(LogMessages.ENTITY_NO_ENTITIES_FOUND_BY_IDS, HospitalDto.class.getSimpleName());
+            return Collections.emptyList();
+        }
+
+        logger.info(LogMessages.ALL_ENTITY_FETCH_SUCCESS, HospitalDto.class.getSimpleName(), hospitals.size());
+        return mappingUtils.mapToDtoList(hospitals, HospitalDto.class);
+    }
+
+
 
     @Override
     public HospitalDto findByLocation(Double latitude, Double longitude) {

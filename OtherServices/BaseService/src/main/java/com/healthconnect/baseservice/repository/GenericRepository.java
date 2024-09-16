@@ -16,5 +16,5 @@ public interface GenericRepository<T, ID> extends JpaRepository<T, ID> {
 
     @Modifying
     @Query("UPDATE #{#entityName} e SET e.isActive = false WHERE e.id = :id")
-    Long deactivateById(@Param("id") ID id);
+    int deactivateById(@Param("id") ID id);
 }

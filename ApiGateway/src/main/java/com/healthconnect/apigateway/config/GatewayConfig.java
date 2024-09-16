@@ -39,6 +39,11 @@ public class GatewayConfig {
                                 .setRateLimiter(rateLimiterConfig.redisRateLimiter())
                                 .setKeyResolver(rateLimiterConfig.ipKeyResolver())))
                         .uri(RouteConstants.HOSPITAL_SERVICE_URI))
+                .route(RouteConstants.DOCTOR_SERVICE_ID, r -> r.path(RouteConstants.DOCTOR_SERVICE_PATH)
+                        .filters(f -> f.requestRateLimiter(config -> config
+                                .setRateLimiter(rateLimiterConfig.redisRateLimiter())
+                                .setKeyResolver(rateLimiterConfig.ipKeyResolver())))
+                        .uri(RouteConstants.DOCTOR_SERVICE_URI))
                 .build();
     }
 

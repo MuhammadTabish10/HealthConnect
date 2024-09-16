@@ -22,4 +22,15 @@ public class DoctorAvailability {
     private String dayOfWeek;
     private LocalTime startTime;
     private LocalTime endTime;
+    private Boolean isActive;
+
+    @Column(nullable = false)
+    private Long hospitalId;
+
+    @PrePersist
+    protected void onCreate() {
+        if (this.isActive == null) {
+            this.isActive = true;
+        }
+    }
 }
