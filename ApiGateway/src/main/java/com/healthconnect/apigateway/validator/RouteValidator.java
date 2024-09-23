@@ -17,6 +17,7 @@ public class RouteValidator {
     private static final List<String> AUTH_WHITELIST = List.of(
             "/api/v1/users/login",
             "/swagger-ui.html",
+            "/swagger-ui/index.html",
             "/v2/api-docs",
             "/eureka",
             "/swagger-ui/**",

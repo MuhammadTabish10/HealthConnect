@@ -2,18 +2,17 @@ package com.healthconnect.doctorservice.service.impl;
 
 import com.healthconnect.baseservice.constant.ErrorMessages;
 import com.healthconnect.baseservice.constant.LogMessages;
+import com.healthconnect.baseservice.exception.EntityAlreadyExistException;
 import com.healthconnect.baseservice.exception.EntityDeleteException;
 import com.healthconnect.baseservice.exception.EntityNotFoundException;
 import com.healthconnect.baseservice.exception.EntityUpdateException;
-import com.healthconnect.baseservice.repository.GenericRepository;
-import com.healthconnect.baseservice.service.impl.GenericServiceImpl;
-import com.healthconnect.baseservice.util.MappingUtils;
 import com.healthconnect.commonmodels.dto.DoctorAvailabilityDto;
 import com.healthconnect.commonmodels.dto.DoctorDto;
 import com.healthconnect.commonmodels.dto.HospitalDto;
 import com.healthconnect.commonmodels.dto.UserDto;
 import com.healthconnect.commonmodels.model.doctor.Doctor;
 import com.healthconnect.commonmodels.model.doctor.DoctorAvailability;
+import com.healthconnect.commonmodels.model.hospital.Hospital;
 import com.healthconnect.doctorservice.client.HospitalClient;
 import com.healthconnect.doctorservice.client.UserClient;
 import com.healthconnect.doctorservice.repository.DoctorAvailabilityRepository;
@@ -24,28 +23,27 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.*;
 import java.util.stream.Collectors;
 
 import static com.healthconnect.doctorservice.util.DoctorServiceUtil.*;
 
 @Service
-public class DoctorServiceImpl extends GenericServiceImpl<Doctor, DoctorDto> implements DoctorService {
+public class DoctorServiceImpl implements DoctorService {
 
     private static final Logger logger = LoggerFactory.getLogger(DoctorServiceImpl.class);
 
     private final DoctorRepository doctorRepository;
     private final DoctorAvailabilityRepository doctorAvailabilityRepository;
-    private final MappingUtils mappingUtils;
     private final HospitalClient hospitalClient;
     private final UserClient userClient;
 
-    public DoctorServiceImpl(GenericRepository<Doctor, Long> repository, MappingUtils mappingUtils,
-                             DoctorRepository doctorRepository, DoctorAvailabilityRepository doctorAvailabilityRepository, HospitalClient hospitalClient, UserClient userClient) {
-        super(repository, mappingUtils, Doctor.class, DoctorDto.class);
+    public DoctorServiceImpl(DoctorRepository doctorRepository, DoctorAvailabilityRepository doctorAvailabilityRepository,
+                             HospitalClient hospitalClient, UserClient userClient) {
         this.doctorRepository = doctorRepository;
         this.doctorAvailabilityRepository = doctorAvailabilityRepository;
-        this.mappingUtils = mappingUtils;
         this.hospitalClient = hospitalClient;
         this.userClient = userClient;
     }
@@ -54,12 +52,15 @@ public class DoctorServiceImpl extends GenericServiceImpl<Doctor, DoctorDto> imp
     @Transactional
     public DoctorDto save(DoctorDto doctorDto) {
 
+        if(doctorRepository.findByLicenseNumber(doctorDto.getLicenseNumber())){
+            throw new EntityAlreadyExistException("Doctor with LicenseNumber " + doctorDto.getLicenseNumber() + " already exist");
+        }
+
         List<Long> hospitalIds = doctorDto.getHospitals().stream()
                 .map(HospitalDto::getId)
                 .toList();
 
-        List<HospitalDto> hospitalDtoList = hospitalClient.getAllHospitalsByIds(hospitalIds);
-        Map<Long, HospitalDto> hospitalMap = mapHospitalsById(hospitalDtoList);
+        Map<Long, HospitalDto> hospitalMap = hospitalClient.getAllHospitalsByIds(hospitalIds);
 
         List<DoctorAvailability> availabilities = doctorDto.getAvailabilities().stream()
                 .map(availabilityDto -> {
@@ -162,8 +163,7 @@ public class DoctorServiceImpl extends GenericServiceImpl<Doctor, DoctorDto> imp
                     .orElseThrow(() -> new EntityNotFoundException("User with ID " + doctor.getUserId() + " not found"));
 
             List<Long> hospitalIds = doctor.getHospitalIds();
-            List<HospitalDto> hospitalDtoList = hospitalClient.getAllHospitalsByIds(hospitalIds);
-            Map<Long, HospitalDto> hospitalMap = mapHospitalsById(hospitalDtoList);
+            Map<Long, HospitalDto> hospitalMap = hospitalClient.getAllHospitalsByIds(hospitalIds);
 
             List<HospitalDto> hospitals = doctor.getHospitalIds().stream()
                     .map(hospitalMap::get)
@@ -244,8 +244,7 @@ public class DoctorServiceImpl extends GenericServiceImpl<Doctor, DoctorDto> imp
 
             DoctorDto resultDto;
 
-            List<HospitalDto> hospitalDtoList = hospitalClient.getAllHospitalsByIds(hospitalsToUpdate);
-            Map<Long, HospitalDto> hospitalMap = mapHospitalsById(hospitalDtoList);
+            Map<Long, HospitalDto> hospitalMap = hospitalClient.getAllHospitalsByIds(hospitalsToUpdate);
 
             if (!existingHospitals.equals(hospitalsToUpdate)) {
                 List<DoctorAvailability> availabilities = doctorDto.getAvailabilities().stream()
@@ -314,7 +313,83 @@ public class DoctorServiceImpl extends GenericServiceImpl<Doctor, DoctorDto> imp
         }
     }
 
+    @Override
+    public Boolean isDoctorAvailableAtHospital(Long doctorId, Long hospitalId, LocalDate date, LocalTime time) {
+        List<DoctorAvailability> availabilities = doctorAvailabilityRepository
+                .findByDoctorIdAndHospitalIdAndDayOfWeek(doctorId, hospitalId, date.getDayOfWeek().toString());
+        return availabilities.stream()
+                .anyMatch(availability -> !time.isBefore(availability.getStartTime()) && !time.isAfter(availability.getEndTime()));
+    }
 
+    @Override
+    public Map<Long, DoctorDto> findAllByIds(List<Long> ids) {
+        if (ids == null || ids.isEmpty()) {
+            return Collections.emptyMap();  // Return empty map if no ids provided
+        }
 
+        logger.info(LogMessages.ENTITY_FETCHING_BY_IDS, DoctorDto.class.getSimpleName(), ids.size());
+
+        List<Doctor> doctorList = doctorRepository.findByIdIn(ids);
+        if (doctorList.isEmpty()) {
+            logger.warn(LogMessages.ENTITY_NO_ENTITIES_FOUND_BY_IDS, DoctorDto.class.getSimpleName());
+            return Collections.emptyMap();
+        }
+
+        List<HospitalDto> hospitalDtoList = hospitalClient.getAllHospitals(true);
+        Map<Long, HospitalDto> hospitalMap = mapHospitalsById(hospitalDtoList);
+
+        // Map each doctor to its ID
+        Map<Long, DoctorDto> doctorDtoMap = doctorList.stream()
+                .map(doctor -> {
+                    UserDto userDto = Optional.ofNullable(userClient.getUserById(doctor.getUserId()))
+                            .orElseThrow(() -> new EntityNotFoundException("User with ID " + doctor.getUserId() + " not found"));
+
+                    List<Long> hospitalIds = doctor.getHospitalIds();
+
+                    List<HospitalDto> hospitals = hospitalIds.stream()
+                            .map(hospitalMap::get)
+                            .filter(Objects::nonNull)
+                            .toList();
+
+                    List<DoctorAvailabilityDto> availabilityDtos = doctor.getAvailabilities().stream()
+                            .map(availability -> {
+                                HospitalDto hospitalDto = validateHospitalExists(hospitalMap, availability.getHospitalId());
+                                return mapToDoctorAvailabilityDto(availability, hospitalDto);
+                            })
+                            .toList();
+
+                    DoctorDto doctorDto = toDto(doctor);
+                    doctorDto.setUser(userDto);
+                    doctorDto.setHospitals(hospitals);
+                    doctorDto.setAvailabilities(availabilityDtos);
+
+                    return doctorDto;
+                })
+                .collect(Collectors.toMap(DoctorDto::getId, doctorDto -> doctorDto));
+
+        logger.info(LogMessages.ENTITY_FETCH_ALL_SUCCESS, doctorDtoMap.size(), DoctorDto.class.getSimpleName());
+        return doctorDtoMap;
+    }
+
+    @Override
+    public List<DoctorAvailabilityDto> findDoctorAvailabilityByDoctor(Long doctorId) {
+        List<DoctorAvailability> doctorAvailabilities = doctorAvailabilityRepository.findByDoctorId(doctorId);
+
+        List<Long> hospitalsId = doctorAvailabilities.stream()
+                .map(DoctorAvailability::getHospitalId)
+                .toList();
+
+        Map<Long, HospitalDto> hospitalMap = hospitalClient.getAllHospitalsByIds(hospitalsId);
+
+        return doctorAvailabilities.stream()
+                .map(availability -> {
+                    HospitalDto hospitalDto = validateHospitalExists(hospitalMap, availability.getHospitalId());
+                    return mapToDoctorAvailabilityDto(availability, hospitalDto);
+                })
+                .toList();
+    }
 
 }
+
+
+

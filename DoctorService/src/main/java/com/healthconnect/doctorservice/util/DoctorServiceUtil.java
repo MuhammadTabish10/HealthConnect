@@ -92,4 +92,5 @@ public class DoctorServiceUtil {
                 .isActive(doctor.getIsActive())
                 .build();
     }
+
 }

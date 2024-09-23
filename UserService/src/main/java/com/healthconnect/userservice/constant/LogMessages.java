@@ -16,6 +16,12 @@ public class LogMessages {
     public static final String FAILED_TO_CREATE_USER_IN_KEYCLOAK_LOG = "Failed to create user in Keycloak";
     public static final String USER_NOT_FOUND_IN_KEYCLOAK = "User not found in Keycloak";
     public static final String FAILED_TO_CREATE_USER_IN_KEYCLOAK_STATUS_LOG = "Failed to create user in Keycloak. Response status: ";
+    public static final String USER_DETAILS_MISSING = "Failed to create user in Keycloak: User details are missing.";
+    public static final String EMAIL_REQUIRED = "Failed to create user in Keycloak: Email is required.";
+    public static final String EMAIL_INVALID = "Failed to create user in Keycloak: Email format is invalid.";
+    public static final String FIRST_NAME_REQUIRED = "Failed to create user in Keycloak: First name is required.";
+    public static final String LAST_NAME_REQUIRED = "Failed to create user in Keycloak: Last name is required.";
+    public static final String PASSWORD_INVALID = "Failed to create user in Keycloak: Password must be at least 6 characters long.";
 
 
     public static final String LOG_MSG_USER_LOGGED_OUT_SUCCESS = "User logged out successfully with refresh token {}";

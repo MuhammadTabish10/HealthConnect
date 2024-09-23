@@ -27,6 +27,7 @@ public class SecurityConstants {
     public static final String REALM_ACCESS_LOG = "realm_access claim: {}";
     public static final String NO_ROLES_REALM_ACCESS_LOG = "No roles found in realm_access. Checking resource_access...";
     public static final String ROLES_EXTRACTED_LOG = "Roles extracted from JWT: {}";
+    public static final String REQUEST_URI_SECURED_LOG = "Request for URI %s is secured: %s";
 
     // Keycloak Resources
     public static final String REALM_ACCESS = "realm_access";

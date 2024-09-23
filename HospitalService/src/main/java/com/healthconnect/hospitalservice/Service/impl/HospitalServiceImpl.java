@@ -20,6 +20,8 @@ import org.springframework.stereotype.Service;
 
 import java.util.Collections;
 import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 import static com.healthconnect.baseservice.constant.ErrorMessages.ENTITY_NOT_FOUND_AT_ID;
 import static com.healthconnect.baseservice.constant.LogMessages.ENTITY_FETCH_ERROR;
@@ -76,9 +78,9 @@ public class HospitalServiceImpl extends GenericServiceImpl<Hospital, HospitalDt
     }
 
     @Override
-    public List<HospitalDto> findAllByIds(List<Long> ids) {
+    public Map<Long, HospitalDto> findAllByIds(List<Long> ids) {
         if (ids == null || ids.isEmpty()) {
-            return Collections.emptyList();
+            return Collections.emptyMap();
         }
 
         logger.info(LogMessages.ENTITY_FETCHING_BY_IDS, HospitalDto.class.getSimpleName(), ids.size());
@@ -86,12 +88,15 @@ public class HospitalServiceImpl extends GenericServiceImpl<Hospital, HospitalDt
         List<Hospital> hospitals = hospitalRepository.findByIdIn(ids);
         if (hospitals.isEmpty()) {
             logger.warn(LogMessages.ENTITY_NO_ENTITIES_FOUND_BY_IDS, HospitalDto.class.getSimpleName());
-            return Collections.emptyList();
+            return Collections.emptyMap();
         }
 
         logger.info(LogMessages.ALL_ENTITY_FETCH_SUCCESS, HospitalDto.class.getSimpleName(), hospitals.size());
-        return mappingUtils.mapToDtoList(hospitals, HospitalDto.class);
+
+        return hospitals.stream()
+                .collect(Collectors.toMap(Hospital::getId, hospital -> mappingUtils.mapToDto(hospital, HospitalDto.class)));
     }
+
 
 
 

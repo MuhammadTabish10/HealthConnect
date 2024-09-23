@@ -6,7 +6,10 @@ import com.healthconnect.baseservice.exception.*;
 import com.healthconnect.baseservice.repository.GenericRepository;
 import com.healthconnect.baseservice.service.impl.GenericServiceImpl;
 import com.healthconnect.baseservice.util.MappingUtils;
+import com.healthconnect.commonmodels.dto.HospitalDto;
 import com.healthconnect.commonmodels.dto.UserDto;
+import com.healthconnect.commonmodels.enums.Gender;
+import com.healthconnect.commonmodels.model.hospital.Hospital;
 import com.healthconnect.commonmodels.model.user.User;
 import com.healthconnect.userservice.dto.LoginCredentials;
 import com.healthconnect.userservice.dto.TokenResponse;
@@ -32,8 +35,8 @@ import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestTemplate;
 
 import java.time.LocalDateTime;
-import java.util.HashMap;
-import java.util.Optional;
+import java.util.*;
+import java.util.stream.Collectors;
 
 import static com.healthconnect.userservice.constant.LogMessages.*;
 import static com.healthconnect.userservice.util.UserUtils.extractUserIdFromResponse;
@@ -217,6 +220,26 @@ public class UserServiceImpl extends GenericServiceImpl<User, UserDto> implement
         return PASSWORD_RESET_SUCCESS_MSG;
     }
 
+    @Override
+    public Map<Long, UserDto> findAllByIds(List<Long> ids) {
+        if (ids == null || ids.isEmpty()) {
+            return Collections.emptyMap();
+        }
+
+        logger.info(LogMessages.ENTITY_FETCHING_BY_IDS, UserDto.class.getSimpleName(), ids.size());
+
+        List<User> users = userRepository.findByIdIn(ids);
+        if (users.isEmpty()) {
+            logger.warn(LogMessages.ENTITY_NO_ENTITIES_FOUND_BY_IDS, UserDto.class.getSimpleName());
+            return Collections.emptyMap();
+        }
+
+        logger.info(LogMessages.ALL_ENTITY_FETCH_SUCCESS, UserDto.class.getSimpleName(), users.size());
+        return users.stream()
+                .collect(Collectors.toMap(User::getId, user -> mappingUtils.mapToDto(user, UserDto.class)));
+    }
+
+
 
     @Override
     @Transactional
@@ -232,7 +255,7 @@ public class UserServiceImpl extends GenericServiceImpl<User, UserDto> implement
             existingUser.setFirstName(userDto.getFirstName());
             existingUser.setLastName(userDto.getLastName());
             existingUser.setAge(userDto.getAge());
-            existingUser.setGender(userDto.getGender());
+            existingUser.setGender(Gender.valueOf(userDto.getGender()));
             existingUser.setAddress(userDto.getAddress());
             existingUser.setCity(userDto.getCity());
 
@@ -279,6 +302,9 @@ public class UserServiceImpl extends GenericServiceImpl<User, UserDto> implement
     }
 
     private Response createUserInKeycloak(UserDto userDto) {
+
+        userUtils.validateUserFields(userDto);
+
         try (Response response = keycloakAdminService.addUser(
                 realm,
                 userDto.getEmail(),

@@ -44,6 +44,11 @@ public class GatewayConfig {
                                 .setRateLimiter(rateLimiterConfig.redisRateLimiter())
                                 .setKeyResolver(rateLimiterConfig.ipKeyResolver())))
                         .uri(RouteConstants.DOCTOR_SERVICE_URI))
+                .route(RouteConstants.APPOINTMENT_SERVICE_ID, r -> r.path(RouteConstants.APPOINTMENT_SERVICE_PATH)
+                        .filters(f -> f.requestRateLimiter(config -> config
+                                .setRateLimiter(rateLimiterConfig.redisRateLimiter())
+                                .setKeyResolver(rateLimiterConfig.ipKeyResolver())))
+                        .uri(RouteConstants.APPOINTMENT_SERVICE_URI))
                 .build();
     }
 

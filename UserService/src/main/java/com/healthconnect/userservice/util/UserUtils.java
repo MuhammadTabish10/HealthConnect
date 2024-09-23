@@ -3,6 +3,8 @@ package com.healthconnect.userservice.util;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.healthconnect.baseservice.exception.EntityNotFoundException;
+import com.healthconnect.baseservice.exception.EntitySaveException;
+import com.healthconnect.commonmodels.dto.UserDto;
 import com.healthconnect.userservice.dto.LoginCredentials;
 import com.healthconnect.userservice.dto.TokenResponse;
 import jakarta.ws.rs.core.Response;
@@ -23,8 +25,9 @@ import java.time.LocalDateTime;
 import java.util.Base64;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.regex.Pattern;
 
-import static com.healthconnect.userservice.constant.LogMessages.USER_NOT_FOUND_IN_KEYCLOAK;
+import static com.healthconnect.userservice.constant.LogMessages.*;
 import static com.healthconnect.userservice.constant.UserConstants.*;
 
 @Component
@@ -41,6 +44,9 @@ public class UserUtils {
 
     private final ObjectMapper objectMapper;
     private final Keycloak keycloak;
+
+    private static final String EMAIL_REGEX = "^[A-Za-z0-9+_.-]+@[A-Za-z0-9.-]+$";
+    private static final Pattern EMAIL_PATTERN = Pattern.compile(EMAIL_REGEX);
 
     public UserUtils(ObjectMapper objectMapper, Keycloak keycloak) {
         this.objectMapper = objectMapper;
@@ -134,5 +140,39 @@ public class UserUtils {
         byte[] tokenBytes = new byte[4];
         secureRandom.nextBytes(tokenBytes);
         return Base64.getUrlEncoder().withoutPadding().encodeToString(tokenBytes).substring(0, 6);
+    }
+
+    public void validateUserFields(UserDto userDto) {
+        if (userDto == null) {
+            throw new EntitySaveException(USER_DETAILS_MISSING);
+        }
+        if (isInvalid(userDto.getEmail())) {
+            throw new EntitySaveException(EMAIL_REQUIRED);
+        }
+        if (!isEmailValid(userDto.getEmail())) {
+            throw new EntitySaveException(EMAIL_INVALID);
+        }
+        if (isInvalid(userDto.getFirstName())) {
+            throw new EntitySaveException(FIRST_NAME_REQUIRED);
+        }
+        if (isInvalid(userDto.getLastName())) {
+            throw new EntitySaveException(LAST_NAME_REQUIRED);
+        }
+        if (isInvalidPassword(userDto.getPassword())) {
+            throw new EntitySaveException(PASSWORD_INVALID);
+        }
+    }
+
+
+    public boolean isInvalid(String field) {
+        return field == null || field.trim().isEmpty();
+    }
+
+    public boolean isInvalidPassword(String password) {
+        return password == null || password.length() < 6;
+    }
+
+    public boolean isEmailValid(String email) {
+        return email != null && EMAIL_PATTERN.matcher(email).matches();
     }
 }

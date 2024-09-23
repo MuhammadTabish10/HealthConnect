@@ -25,14 +25,9 @@ public class UserDto {
     @Min(value = 0, message = "Age must be a positive number")
     private Integer age;
 
-    private Gender gender;
+    private String gender;
 
-    @Email(message = "Email should be valid")
-    @NotBlank(message = "Email is mandatory")
     private String email;
-
-    @NotBlank(message = "Password is mandatory")
-    @Size(min = 6, message = "Password must be at least 6 characters long")
     private String password;
 
     @Pattern(regexp = "^\\+?[0-9. ()-]{7,25}$", message = "Phone number is invalid")

@@ -27,6 +27,10 @@ public class DoctorAvailability {
     @Column(nullable = false)
     private Long hospitalId;
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "doctor_id", nullable = false)
+    private Doctor doctor;
+
     @PrePersist
     protected void onCreate() {
         if (this.isActive == null) {

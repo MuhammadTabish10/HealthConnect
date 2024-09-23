@@ -64,7 +64,7 @@ public class ServletLoggingFilter implements Filter {
     private void logResponseDetails(HttpServletResponse response) throws IOException {
         logBasicInfo(RESPONSE_SENT_HEADER, null, null, RESPONSE_TYPE);
         logger.info(STATUS_CODE_LABEL, response.getStatus(),
-                (response.getStatus() == 200 || response.getStatus() == 204)
+                (response.getStatus() == 200 || response.getStatus() == 204 || response.getStatus() == 201)
                 ? CHECK_MARK : ERROR);
         logHeaders(response);
         logBody(((CachedBodyHttpServletResponse) response).getCachedBody(), RESPONSE_BODY_LABEL);

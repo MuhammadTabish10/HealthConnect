@@ -10,6 +10,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping(ApiEndpoints.HOSPITALS)
@@ -23,10 +24,11 @@ public class HospitalController extends GenericController<HospitalDto>{
     }
 
     @GetMapping(ApiEndpoints.HOSPITALS_BY_IDS)
-    public ResponseEntity<List<HospitalDto>> getAllHospitalsByIds(@PathVariable(name = "hospital-ids") List<Long> ids) {
-        List<HospitalDto> hospitals = hospitalService.findAllByIds(ids);
-        return new ResponseEntity<>(hospitals, HttpStatus.OK);
+    public ResponseEntity<Map<Long, HospitalDto>> getAllHospitalsByIds(@PathVariable(name = "hospital-ids") List<Long> ids) {
+        Map<Long, HospitalDto> hospitalMap = hospitalService.findAllByIds(ids);
+        return new ResponseEntity<>(hospitalMap, HttpStatus.OK);
     }
+
 
     @GetMapping(ApiEndpoints.CITY)
     public ResponseEntity<List<HospitalDto>> getAllHospitalsByCity(@RequestParam String city) {

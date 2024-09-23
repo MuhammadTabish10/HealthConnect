@@ -1,0 +1,47 @@
+# Server Configuration
+server:
+  port: 9095
+
+# Application Configuration
+spring:
+  application:
+    name: APPOINTMENT-SERVICE
+
+  # DataSource Configuration
+  datasource:
+    url: jdbc:mysql://localhost:3306/appointment_service?createDatabaseIfNotExist=true
+    username: root
+    password: root
+    driver-class-name: com.mysql.cj.jdbc.Driver
+
+  # JPA Configuration
+  jpa:
+    hibernate:
+      use-new-id-generator-mappings: false
+    ddl-auto: update
+    generate-ddl: true
+
+
+app:
+  keycloak:
+    auth-server-url: http://localhost:8080
+    realm: healthconnect-realm
+    resource: healthconnect-client
+    credentials:
+      secret: CDVXONhkCSSlcm8dpfQ64JVaw5HtggS8
+      username: muhammadtabish05@gmail.com
+      password: 123
+
+  swagger:
+    base-package: com.healthconnect.appointmentservice
+    title: Appointment Service API Documentation
+    description: API documentation for the Appointment Management service of Healthcare Connect.
+    version: v1
+
+
+feign-client:
+  services:
+    urls:
+      hospital: http://localhost:9093/api/v1/hospitals
+      user: http://localhost:9091/api/v1/users
+      doctor: http://localhost:9094/api/v1/doctors
